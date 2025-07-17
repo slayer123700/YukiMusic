@@ -11,8 +11,8 @@ from AviaxMusic.utils.database import is_on_off
 from AviaxMusic.utils.formatters import time_to_seconds
 from youtubesearchpython.__future__ import VideosSearch, CustomSearch
 
-API_URL = "https://tgmusic.fallenapi.fun"
-API_KEY = "ca20a1_CpZ6wHK-pM2qAtdYOJHO5eSbHOg-3ftW"
+API_URL = "http://45.38.42.10:8000"
+API_KEY = "10968cc13c074e53b3039b8eead672fd"
 
 logger = LOGGER(__name__)
 
