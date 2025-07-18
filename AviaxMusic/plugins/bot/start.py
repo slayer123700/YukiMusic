@@ -29,7 +29,6 @@ from strings import get_string
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
- msg = await message.reply("⚡")
     
     # Repeat the cycle of emojis three times
     for _ in range(2):
