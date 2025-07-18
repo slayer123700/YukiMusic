@@ -41,7 +41,7 @@ async def start_pm(client, message: Message, _):
     
     # Show the "Starting Bot" message
     await asyncio.sleep(0.6)
-    await msg.edit("sᴛᴀʀᴛɪɴɢ 𝐒ᴇɪsʜɪʀᴏ 𝐍ᴀɢɪ, ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ғᴏʀ ᴀ sᴇᴄ...")
+    await msg.edit("sᴛᴀʀᴛɪɴɢ Yuki Music, ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ғᴏʀ ᴀ sᴇᴄ...")
     
     # Wait for 3 seconds before deleting the "Starting Bot" message
     await asyncio.sleep(1.75)
