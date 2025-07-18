@@ -64,7 +64,7 @@ async def start_pm(client, message: Message, _):
             await sudoers_list(client=client, message=message, _=_)
             if await is_on_off(2):
                 await app.send_message(
-                    chat_id=config.LOGGER_ID,
+                    chat_id=config.LOG_GROUP_ID,
                     text=f"{message.from_user.mention} ᴄʜᴇᴄᴋᴇᴅ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n"
                          f"<b>ᴜsᴇʀ ɪᴅ:</b> <code>{message.from_user.id}</code>\n"
                          f"<b>ᴜsᴇʀɴᴀᴍᴇ:</b> @{message.from_user.username}",
@@ -105,7 +105,7 @@ async def start_pm(client, message: Message, _):
                 )
                 if await is_on_off(2):
                     await app.send_message(
-                        chat_id=config.LOGGER_ID,
+                        chat_id=config.LOG_GROUP_ID,
                         text=f"<b>{message.from_user.mention} ᴄʜᴇᴄᴋᴇᴅ ᴛʀᴀᴄᴋ ɪɴғᴏ.</b>\n\n"
                              f"<b>• ɪᴅᴇɴᴛɪғɪᴇʀ ⌯</b> <code>{message.from_user.id}</code>\n"
                              f"<b>• ʜᴀɴᴅʟᴇ ⌯</b> {message.from_user.username}.t.me",
