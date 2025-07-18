@@ -11,7 +11,7 @@ API_ID = int(getenv("API_ID", "26249286"))
 API_HASH = getenv("API_HASH", "4e3bf0b014fda4ac752e8f4ab854279b")
 
 # Get your token from @BotFather on Telegram.
-BOT_TOKEN = getenv("BOT_TOKEN", "7910013842:AAFG5RpMDnxP1EzH0TrvE0KsUpVjnkkuzqM")
+BOT_TOKEN = getenv("BOT_TOKEN", "8040764357:AAH5d5f9IAQN-jJGJ4zsVAs7Dxh9hr2Nnhw")
 
 # Get your mongo url from cloud.mongodb.com
 MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://tanjiro1564:tanjiro1564@cluster0.pp5yz4e.mongodb.net/?retryWrites=true&w=majority")
@@ -39,8 +39,8 @@ GIT_TOKEN = getenv(
     "GIT_TOKEN", None
 )  # Fill this variable if your upstream repository is private
 
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/astheticdpsforu")
-SUPPORT_GROUP = getenv("SUPPORT_GROUP", "https://t.me/ANIME_CHAT_ANG")
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/eldian_bot_update")
+SUPPORT_GROUP = getenv("SUPPORT_GROUP", "https://t.me/+vuzPm5BpV3Y0NTVl")
 
 # Set this to True if you want the assistant to automatically leave chats after an interval
 AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
@@ -81,16 +81,16 @@ confirmer = {}
 
 
 START_IMG_URL = getenv(
-    "START_IMG_URL", "https://graph.org//file/2c307468e920ce7ebc171.mp4"
+    "START_IMG_URL", "https://files.catbox.moe/v9assw.jpg"
 )
 PING_IMG_URL = getenv(
-    "PING_IMG_URL", "https://telegra.ph/file/c9936996e57ed758fda52.jpg"
+    "PING_IMG_URL", "https://files.catbox.moe/2rahxv.jpg"
 )
-PLAYLIST_IMG_URL = "https://graph.org//file/3dfcffd0c218ead96b102.png"
-STATS_IMG_URL = "https://telegra.ph/file/59d7eaec62d37a98d71ec.jpg"
-TELEGRAM_AUDIO_URL = "https://graph.org//file/2f7debf856695e0ef0607.png"
-TELEGRAM_VIDEO_URL = "https://graph.org//file/2f7debf856695e0ef0607.png"
-STREAM_IMG_URL = "https://te.legra.ph/file/bd995b032b6bd263e2cc9.jpg"
+PLAYLIST_IMG_URL = "https://files.catbox.moe/0t6grx.jpg"
+STATS_IMG_URL = "https://files.catbox.moe/2rahxv.jpg"
+TELEGRAM_AUDIO_URL = "https://files.catbox.moe/v9assw.jpg"
+TELEGRAM_VIDEO_URL = "https://files.catbox.moe/v9assw.jpg"
+STREAM_IMG_URL = "https://files.catbox.moe/uv2r88.jpg"
 SOUNCLOUD_IMG_URL = "https://te.legra.ph/file/bb0ff85f2dd44070ea519.jpg"
 YOUTUBE_IMG_URL = "https://graph.org//file/2f7debf856695e0ef0607.png"
 SPOTIFY_ARTIST_IMG_URL = "https://te.legra.ph/file/37d163a2f75e0d3b403d6.jpg"
