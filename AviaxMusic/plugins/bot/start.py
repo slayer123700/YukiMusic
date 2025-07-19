@@ -44,7 +44,7 @@ async def start_pm(client, message: Message, _):
     await asyncio.sleep(0.1)
     await loading_1.delete()
 
-    started_msg = await message.reply_text(text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/ii8drn.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>")
+    started_msg = await message.reply_text(text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>")
     await asyncio.sleep(0.4)
     await started_msg.delete()
 
@@ -54,9 +54,11 @@ async def start_pm(client, message: Message, _):
             keyboard = help_pannel(_)
             await message.reply_text(
                 text=(
-                    f"<b>ʜᴇʏ {message.from_user.mention}, <a href='https://files.catbox.moe/ii8drn.mp4' target='_blank'>✨⚡</a></b>\n\n"
-                    f"<b>ᴛʜɪs ɪs {app.mention}, ᴇʟᴇᴠᴀᴛᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴠɪᴅᴇᴏ ᴄʜᴀᴛ ᴡɪᴛʜ ᴛʜɪs ᴀᴡᴇsᴏᴍᴇ ᴛᴇʟᴇɢʀᴀᴍ ᴍᴜsɪᴄ ʙᴏᴛ.</b>\n\n"
-                    f"<b>sᴛʀᴇᴀᴍ ʜɪɢʜ-ǫᴜᴀʟɪᴛʏ ᴍᴜsɪᴄ ᴅᴜʀɪɴɢ ʏᴏᴜʀ ᴄʜᴀᴛs ᴀɴᴅ sʜᴀʀᴇ ʏᴏᴜʀ ғᴀᴠᴏʀɪᴛᴇ sᴏɴɢs ᴛᴏ ᴍᴀᴋᴇ ᴀ ғʀɪᴇɴᴅʟʏ & ʟᴏᴠᴇʟʏ ᴀᴛᴍᴏsᴘʜᴇʀᴇ!</b>"
+                    f"𝐇ᴇʏ 🫰🏻💕  {message.from_user.mention}
+
+𝚻ʜɪs 𝐈s {app.mention} , 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌
+
+𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂"
                     ),
                 reply_markup=keyboard,
             )
@@ -117,9 +119,12 @@ async def start_pm(client, message: Message, _):
         out = private_panel(_)
         await message.reply_text(
             text=(
-                 f"<b>ʏᴏᴏ {message.from_user.mention}, <a href='https://files.catbox.moe/ii8drn.mp4' target='_blank'>✨⚡</a></b>\n\n"
-                 f"<b>ᴛʜɪs ɪs {app.mention}, ᴇʟᴇᴠᴀᴛᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴠɪᴅᴇᴏ ᴄʜᴀᴛ ᴡɪᴛʜ ᴛʜɪs ᴀᴡᴇsᴏᴍᴇ ᴛᴇʟᴇɢʀᴀᴍ ᴍᴜsɪᴄ ʙᴏᴛ.</b>\n\n"
-                 f"<b>sᴛʀᴇᴀᴍ ʜɪɢʜ-ǫᴜᴀʟɪᴛʏ ᴍᴜsɪᴄ ᴅᴜʀɪɴɢ ʏᴏᴜʀ ᴄʜᴀᴛs ᴀɴᴅ sʜᴀʀᴇ ʏᴏᴜʀ ғᴀᴠᴏʀɪᴛᴇ sᴏɴɢs ᴛᴏ ᴄʀᴇᴀᴛᴇ ᴀ ʟᴏᴠᴇʟʏ ᴀᴛᴍᴏsᴘʜᴇʀᴇ!</b>"
+                 f"<b>ʏᴏᴏ {message.from_user.mention}, <a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>✨⚡</a></b>\n\n"
+                 f"𝐇ᴇʏ 🫰🏻💕  {message.from_user.mention}
+
+𝚻ʜɪs 𝐈s {app.mention} , 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌
+
+𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂"
             ),
             reply_markup=InlineKeyboardMarkup(out),
         )
