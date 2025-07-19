@@ -24,6 +24,10 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", -1002745123292))
 # Get this value from @MissRose_Bot on Telegram by /id
 OWNER_ID = int(getenv("OWNER_ID", "6018803920"))
 
+#YOUTUBE API's 
+API_URL = getenv("API_URL", 'https://tgmusic.fallenapi.fun') #youtube song url
+API_KEY = getenv("API_KEY", 'ca20a1_CpZ6wHK-pM2qAtdYOJHO5eSbHOg-3ftW')
+
 ## Fill these variables if you're deploying on heroku.
 # Your heroku app name
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
