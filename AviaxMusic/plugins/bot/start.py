@@ -54,11 +54,9 @@ async def start_pm(client, message: Message, _):
             keyboard = help_pannel(_)
             await message.reply_text(
                 text=(
-                    f"𝐇ᴇʏ 🫰🏻💕  {message.from_user.mention}
-
-𝚻ʜɪs 𝐈s {app.mention} , 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌
-
-𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂"
+                    f"<b>𝐇ᴇʏ 🫰🏻💕 {message.from_user.mention}, <a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>✨⚡</a></b>\n\n"
+                    f"<b>𝚻ʜɪs 𝐈s {app.mention}, 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌.</b>\n\n"
+                    f"<b>𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂</b>"
                     ),
                 reply_markup=keyboard,
             )
@@ -120,11 +118,9 @@ async def start_pm(client, message: Message, _):
         await message.reply_text(
             text=(
                  f"<b>ʏᴏᴏ {message.from_user.mention}, <a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>✨⚡</a></b>\n\n"
-                 f"𝐇ᴇʏ 🫰🏻💕  {message.from_user.mention}
-
-𝚻ʜɪs 𝐈s {app.mention} , 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌
-
-𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂"
+                    f"<b>𝐇ᴇʏ 🫰🏻💕 {message.from_user.mention}, <a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>✨⚡</a></b>\n\n"
+                    f"<b>𝚻ʜɪs 𝐈s {app.mention}, 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌.</b>\n\n"
+                    f"<b>𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂</b>"
             ),
             reply_markup=InlineKeyboardMarkup(out),
         )
