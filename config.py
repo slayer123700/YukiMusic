@@ -25,8 +25,8 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", -1002745123292))
 OWNER_ID = int(getenv("OWNER_ID", "6018803920"))
 
 #YOUTUBE API's 
-API_URL = getenv("API_URL", 'youtube.googleapis.com') #youtube song url
-API_KEY = getenv("API_KEY", 'AIzaSyD_iwN3MADFGdp4xCZFo4G-e04BPyFORms')
+API_URL = getenv("API_URL", 'https://api.thequickearn.xyz') #youtube song url
+API_KEY = getenv("API_KEY", '30DxNexGenBotsb850f6')
 
 ## Fill these variables if you're deploying on heroku.
 # Your heroku app name
