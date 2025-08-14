@@ -74,6 +74,9 @@ def get_main_menu_buttons():
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
+await message.react("🍓", big=True)
+
+
     # Fancy loading animation
     loading_1 = await message.reply_text("⚡")
     for text in ["<b>ʟᴏᴀᴅɪɴɢ</b>", "<b>ʟᴏᴀᴅɪɴɢ.</b>", "<b>ʟᴏᴀᴅɪɴɢ..</b>", "<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>"]:
