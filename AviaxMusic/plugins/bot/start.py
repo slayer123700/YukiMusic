@@ -25,9 +25,10 @@ from config import BANNED_USERS
 from strings import get_string
 
 WELCOME_TEXT = """
+<blockquote>
 🌟✨ 𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 ˹ 𝘚𝘩𝘪𝘻𝘶𝘬𝘢 ꭙ 𝘔𝘶𝘴𝘪𝘤 ˼ (https://t.me/Shizuka_MusicXbot) ✨🌟
 
-🎧 𝑻𝑯𝑬 𝑼𝑳𝑻𝑰𝑴𝑨𝑻𝑬 𝑴𝑼𝑺𝑰𝑪 𝑬𝑿𝑷𝑬𝑹𝑰𝑬𝑵𝑪𝑬 🎶
+🎧 𝑻𝑯𝑬 𝑼𝑳𝑻𝑰𝑴𝑨𝑻𝑬 𝑴𝑼𝑺𝑰𝘾 𝑬𝑿𝑷𝑬𝑹𝑰𝑬𝑁𝑪𝑬 🎶
   ✨ Studio Master Audio Quality
   🚀 Zero-Latency Streaming
   🌙 24/7 Active & Responsive
@@ -45,6 +46,7 @@ WELCOME_TEXT = """
 
 ⚡ 𝑱𝑶𝑰𝑵 𝑶𝑼𝑹 𝑴𝑼𝑺𝑰𝑪 𝑹𝑬𝑽𝑶𝑳𝑼𝑻𝑰𝑶𝑵 𝑻𝑶𝑫𝑨𝒀 ! 🎉
 Ready to experience music like never before?
+</blockquote>
 """
 
 STICKER_FILE_ID = random.choices(config.START_STICKER_FILE_ID, weights=[1, 1])[0]
@@ -54,26 +56,25 @@ STICKER_FILE_ID = random.choices(config.START_STICKER_FILE_ID, weights=[1, 1])[0
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
-    # Reaction 🍓
+    # 🍓 Reaction
     await message.react("🍓", big=True)
 
-    # Show welcome text with effect
-    loading_1 = await message.reply_text(
+    # Send start sticker/video first
+    await message.reply_cached_media(file_id=STICKER_FILE_ID)
+
+    # Send "started..." video preview message
+    started_msg = await message.reply_text(
+        text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>"
+    )
+    await asyncio.sleep(0.4)
+    await started_msg.delete()
+
+    # Send welcome text with effect
+    await message.reply_text(
         WELCOME_TEXT.format(name=message.from_user.mention, id=message.from_user.id),
         invert_media=True,
         message_effect_id=5159385139981059251
     )
-    await asyncio.sleep(0.5)
-    await loading_1.delete()
-
-    # Send start sticker
-    await message.reply_cached_media(file_id=STICKER_FILE_ID)
-
-    started_msg = await message.reply_text(
-        text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>ㅤ</a></b>"
-    )
-    await asyncio.sleep(0.4)
-    await started_msg.delete()
 
     if len(message.text.split()) > 1:
         name = message.text.split(None, 1)[1]
@@ -85,11 +86,9 @@ async def start_pm(client, message: Message, _):
                 invert_media=True,
                 message_effect_id=5159385139981059251
             )
-        if name.startswith("sud"):
+        elif name.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
-            return
-
-        if name.startswith("inf"):
+        elif name.startswith("inf"):
             m = await message.reply_text("⚡️")
             query = name.replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
@@ -101,7 +100,6 @@ async def start_pm(client, message: Message, _):
                     duration = result["duration"]
                     views = result["viewCount"]["short"]
                     thumbnail = result["thumbnails"][0]["url"].split("?")[0]
-                    channellink = result["channel"]["link"]
                     channel = result["channel"]["name"]
                     link = result["link"]
                     published = result["publishedTime"]
@@ -115,9 +113,6 @@ async def start_pm(client, message: Message, _):
                     caption=f"{title}\nDuration: {duration}\nViews: {views}\nPublished: {published}\nChannel: {channel}",
                     reply_markup=key,
                 )
-            else:
-                await m.edit_text("ғᴀɪʟᴇᴅ ᴛᴏ ɢᴇᴛ ɪɴғᴏ.")
-                return
     else:
         out = private_panel(_)
         await message.reply_text(
@@ -154,8 +149,16 @@ async def welcome(client, message: Message):
                     await message.reply_text(_["start_4"])
                     return await app.leave_chat(message.chat.id)
                 if message.chat.id in await blacklisted_chats():
-                    await message.reply_text(_["start_5"].format(app.mention))
+                    await message.reply_text(
+                        _["start_5"].format(
+                            app.mention,
+                            f"https://t.me/{app.username}?start=sudolist",
+                            config.SUPPORT_GROUP,
+                        ),
+                        disable_web_page_preview=True,
+                    )
                     return await app.leave_chat(message.chat.id)
+
                 out = start_panel(_)
                 await message.reply_text(
                     _["start_3"].format(
