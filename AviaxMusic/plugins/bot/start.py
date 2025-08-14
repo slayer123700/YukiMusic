@@ -74,11 +74,11 @@ def get_main_menu_buttons():
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
-await message.react("🍓", big=True)
-
+    # Reaction
+    await message.react("🍓", big=True)
 
     # Fancy loading animation
-    loading_1 = await message.reply_text("⚡")
+    loading_1 = await message.reply_text("⚡")  # ✅ fixed indentation
     for text in ["<b>ʟᴏᴀᴅɪɴɢ</b>", "<b>ʟᴏᴀᴅɪɴɢ.</b>", "<b>ʟᴏᴀᴅɪɴɢ..</b>", "<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>"]:
         await asyncio.sleep(0.1)
         await loading_1.edit_text(text)
