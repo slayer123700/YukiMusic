@@ -25,64 +25,57 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-
-# Escape MarkdownV2 special characters
-def escape_md2(text: str):
-    escape_chars = r"\_*[]()~`>#+-=|{}.!"
-    for ch in escape_chars:
-        text = text.replace(ch, "\\" + ch)
-    return text
-
-
-# Welcome text with blockquotes
+# Welcome text with blockquote style
 def get_welcome_text(user):
-    raw_text = (
-        f"🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
-        f"> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶\n"
-        f"> ✨ Studio Master Audio Quality\n"
-        f"> 🚀 Zero-Latency Streaming\n"
-        f"> 🌙 24/7 Active & Responsive\n"
-        f"> 💫 Smart AI-Powered Playlists\n"
-        f"> 🔥 Lightning-Fast Searches\n"
-        f"> 👤 YOUR PROFILE 👑\n"
+    return (
+        "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
+        "> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶\n"
+        "> ✨ Studio Master Audio Quality\n"
+        "> 🚀 Zero-Latency Streaming\n"
+        "> 🌙 24/7 Active & Responsive\n"
+        "> 💫 Smart AI-Powered Playlists\n"
+        "> 🔥 Lightning-Fast Searches\n"
+        "> 👤 YOUR PROFILE 👑\n"
         f"💖 Name: {user.first_name}\n"
         f"🔐 ID: {user.id}\n"
-        f"> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉\n"
-        f"Ready to experience music like never before?"
+        "> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉\n"
+        "Ready to experience music like never before?"
     )
-    return escape_md2(raw_text)
 
-
-# Private start command
+# ---------------- Private Start ----------------
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
-    # 🍓 Reaction
+    # React
     await message.react("🍓", big=True)
 
     # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video + blockquote text + buttons
-    keyboard = start_panel(_)
+    # Keyboard
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Help", callback_data="help")],
+        [InlineKeyboardButton("Support", url=config.SUPPORT_GROUP)]
+    ])
+
+    # Video + caption + buttons
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
         caption=get_welcome_text(message.from_user),
-        parse_mode="markdownv2",
-        supports_streaming=True,
-        reply_markup=InlineKeyboardMarkup(keyboard),
+        reply_markup=keyboard,
+        supports_streaming=True
     )
 
-    # Handle /start arguments
+    # Handle start arguments
     if len(message.text.split()) > 1:
         arg = message.text.split(None, 1)[1]
         if arg.startswith("help"):
-            keyboard = help_pannel(_)
+            kb = help_pannel(_)
             await message.reply_text(
                 "Here’s how you can use me ⬇️",
-                reply_markup=InlineKeyboardMarkup(keyboard)
+                reply_markup=kb
             )
         elif arg.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
@@ -101,19 +94,16 @@ async def start_pm(client, message: Message, _):
                     channel = result["channel"]["name"]
                     link = result["link"]
                     published = result["publishedTime"]
-                    key = InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="ʏᴏᴜᴛᴜʙᴇ", url=link)]]
-                    )
+                    key = InlineKeyboardMarkup([[InlineKeyboardButton("ʏᴏᴜᴛᴜʙᴇ", url=link)]])
                 await m.delete()
                 await app.send_photo(
                     chat_id=message.chat.id,
                     photo=thumbnail,
                     caption=f"{title}\nDuration: {duration}\nViews: {views}\nPublished: {published}\nChannel: {channel}",
-                    reply_markup=key,
+                    reply_markup=key
                 )
 
-
-# Group start command
+# ---------------- Group Start ----------------
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
@@ -125,8 +115,7 @@ async def start_gp(client, message: Message, _):
     )
     await add_served_chat(message.chat.id)
 
-
-# Welcome new chat members
+# ---------------- Welcome New Members ----------------
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
     for member in message.new_chat_members:
@@ -149,7 +138,7 @@ async def welcome(client, message: Message):
                             f"https://t.me/{app.username}?start=sudolist",
                             config.SUPPORT_GROUP,
                         ),
-                        disable_web_page_preview=True,
+                        disable_web_page_preview=True
                     )
                     return await app.leave_chat(message.chat.id)
 
@@ -159,7 +148,7 @@ async def welcome(client, message: Message):
                         message.from_user.first_name,
                         app.mention,
                         message.chat.title,
-                        app.mention,
+                        app.mention
                     ),
                     reply_markup=InlineKeyboardMarkup(out),
                 )
