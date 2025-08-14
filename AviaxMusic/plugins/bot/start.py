@@ -25,8 +25,7 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-
-# Function to generate blockquote-style text
+# Generate welcome text with blockquotes
 def get_welcome_text(user):
     return (
         "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
@@ -45,7 +44,7 @@ def get_welcome_text(user):
         "```"
     )
 
-
+# Private start command
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
@@ -54,23 +53,17 @@ async def start_pm(client, message: Message, _):
     # 🍓 Reaction
     await message.react("🍓", big=True)
 
-    # Send sticker
+    # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video with blockquote caption and buttons
-    keyboard = InlineKeyboardMarkup(
-        [
-            [InlineKeyboardButton("Help", callback_data="help")],
-            [InlineKeyboardButton("Support", url=config.SUPPORT_GROUP)]
-        ]
-    )
-
+    # Video + blockquote text in the same message
+    out_buttons = start_panel(_)  # Buttons
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
         caption=get_welcome_text(message.from_user),
-        parse_mode="Markdown",
+        parse_mode=None,  # No parse mode to avoid errors
         supports_streaming=True,
-        reply_markup=keyboard
+        reply_markup=InlineKeyboardMarkup(out_buttons)
     )
 
     # Handle /start arguments
@@ -110,7 +103,7 @@ async def start_pm(client, message: Message, _):
                     reply_markup=key,
                 )
 
-
+# Group start command
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
@@ -123,6 +116,7 @@ async def start_gp(client, message: Message, _):
     await add_served_chat(message.chat.id)
 
 
+# Welcome new chat members
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
     for member in message.new_chat_members:
