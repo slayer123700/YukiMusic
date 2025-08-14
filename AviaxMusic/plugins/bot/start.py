@@ -3,7 +3,7 @@ import time
 import random
 from pyrogram import filters
 from pyrogram.enums import ChatType
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
 
 import config
@@ -24,154 +24,127 @@ from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS, OWNER_ID
 from strings import get_string
 
-# ----------------- MENU SYSTEM ----------------- #
-LOADED_MODULES = {}
+# Start sticker selection
 STICKER_FILE_ID = random.choices(config.START_STICKER_FILE_ID, weights=[1, 1])[0]
 
-def get_paginated_buttons(page=1, items_per_page=15):
-    modules = sorted(LOADED_MODULES.keys())
-    total_pages = (len(modules) + items_per_page - 1) // items_per_page
-    start_idx = (page - 1) * items_per_page
-    end_idx = start_idx + items_per_page
-    current_modules = modules[start_idx:end_idx]
-
-    buttons = [
-        InlineKeyboardButton(mod, callback_data=f"help_{i}_{page}")
-        for i, mod in enumerate(current_modules, start=start_idx)
-    ]
-    button_rows = [buttons[i:i + 3] for i in range(0, len(buttons), 3)]
-
-    if page == 1:
-        button_rows.append([InlineKeyboardButton("➡️", callback_data=f"area_{page + 1}")])
-        button_rows.append([InlineKeyboardButton("🗑️", callback_data="delete")])
-        button_rows.append([InlineKeyboardButton("Bᴀᴄᴋ", callback_data="st_back")])
-    elif page == total_pages:
-        button_rows.append([InlineKeyboardButton("⬅️", callback_data=f"area_{page - 1}")])
-        button_rows.append([InlineKeyboardButton("🗑️", callback_data="delete")])
-        button_rows.append([InlineKeyboardButton("Bᴀᴄᴋ", callback_data="st_back")])
-    else:
-        button_rows.append([
-            InlineKeyboardButton("⬅️", callback_data=f"area_{page - 1}"),
-            InlineKeyboardButton("🗑️", callback_data="delete"),
-            InlineKeyboardButton("➡️", callback_data=f"area_{page + 1}"),
-        ])
-        button_rows.append([InlineKeyboardButton("Bᴀᴄᴋ", callback_data="st_back")])
-
-    return InlineKeyboardMarkup(button_rows)
-
-def get_main_menu_buttons():
-    buttons = [
-        [InlineKeyboardButton("➕ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ", url=f"https://t.me/{app.me.username}?startgroup=true")],
-        [InlineKeyboardButton("🤝 Sᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_GROUP),
-         InlineKeyboardButton("👤 ᴏᴡɴᴇʀ", user_id=OWNER_ID)],
-        [InlineKeyboardButton("Cᴏᴍᴍᴀɴᴅs", callback_data="yumeko_help")]
-    ]
-    return InlineKeyboardMarkup(buttons)
-
-# ----------------- START COMMAND ----------------- #
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
-    # Reaction
+    # Reaction 🍓
     await message.react("🍓", big=True)
 
-    # Fancy loading animation
-    loading_1 = await message.reply_text("⚡")  # ✅ fixed indentation
-    for text in ["<b>ʟᴏᴀᴅɪɴɢ</b>", "<b>ʟᴏᴀᴅɪɴɢ.</b>", "<b>ʟᴏᴀᴅɪɴɢ..</b>", "<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>"]:
-        await asyncio.sleep(0.1)
-        await loading_1.edit_text(text)
+    # Loading animation
+    loading_1 = await message.reply_text("⚡")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ.</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ..</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>")
     await asyncio.sleep(0.1)
     await loading_1.delete()
 
-    # Sticker before greeting
+    # Send start sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
     started_msg = await message.reply_text(
-        text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/0v9dyq.mp4'>ㅤ</a></b>"
+        text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>"
     )
     await asyncio.sleep(0.4)
     await started_msg.delete()
 
-    # If /start has arguments
     if len(message.text.split()) > 1:
         name = message.text.split(None, 1)[1]
         if name.startswith("help"):
+            keyboard = help_pannel(_)
             await message.reply_text(
-                "**📚 Available Commands & Modules:**",
-                reply_markup=get_paginated_buttons()
+                text=(
+                    f"<b>𝐇ᴇʏ 🫰🏻💕 {message.from_user.mention}, <a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>✨⚡</a></b>\n\n"
+                    f"<b>𝚻ʜɪs 𝐈s {app.mention}, 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌.</b>\n\n"
+                    f"<b>𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂</b>"
+                ),
+                reply_markup=keyboard,
+                invert_media=True,
+                message_effect_id=5159385139981059251
             )
-            return
         if name.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
+            if await is_on_off(2):
+                await app.send_message(
+                    chat_id=config.LOG_GROUP_ID,
+                    text=f"{message.from_user.mention} ᴄʜᴇᴄᴋᴇᴅ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n"
+                         f"<b>ᴜsᴇʀ ɪᴅ:</b> <code>{message.from_user.id}</code>\n"
+                         f"<b>ᴜsᴇʀɴᴀᴍᴇ:</b> @{message.from_user.username}",
+                )
             return
+
         if name.startswith("inf"):
-            pass
+            m = await message.reply_text("⚡️")
+            query = name.replace("info_", "", 1)
+            query = f"https://www.youtube.com/watch?v={query}"
+            results = VideosSearch(query, limit=1)
+
+            next_result = await results.next()
+
+            if isinstance(next_result, dict) and "result" in next_result:
+                for result in next_result["result"]:
+                    title = result["title"]
+                    duration = result["duration"]
+                    views = result["viewCount"]["short"]
+                    thumbnail = result["thumbnails"][0]["url"].split("?")[0]
+                    channellink = result["channel"]["link"]
+                    channel = result["channel"]["name"]
+                    link = result["link"]
+                    published = result["publishedTime"]
+                    searched_text = _["start_6"].format(
+                        title, duration, views, published, channellink, channel
+                    )
+                    key = InlineKeyboardMarkup(
+                        [[InlineKeyboardButton(text="ʏᴏᴜᴛᴜʙᴇ", url=link)]]
+                    )
+                await m.delete()
+
+                await app.send_photo(
+                    chat_id=message.chat.id,
+                    photo=thumbnail,
+                    caption=searched_text,
+                    reply_markup=key,
+                )
+                if await is_on_off(2):
+                    await app.send_message(
+                        chat_id=config.LOG_GROUP_ID,
+                        text=f"<b>{message.from_user.mention} ᴄʜᴇᴄᴋᴇᴅ ᴛʀᴀᴄᴋ ɪɴғᴏ.</b>\n\n"
+                             f"<b>• ɪᴅᴇɴᴛɪғɪᴇʀ ⌯</b> <code>{message.from_user.id}</code>\n"
+                             f"<b>• ʜᴀɴᴅʟᴇ ⌯</b> {message.from_user.username}.t.me",
+                    )
+            else:
+                await m.edit_text("ғᴀɪʟᴇᴅ ᴛᴏ ʀᴇᴛʀɪᴇᴠᴇ ɪɴғᴏʀᴍᴀᴛɪᴏɴ.")
+                return
     else:
-        await message.reply(
+        out = private_panel(_)
+        await message.reply_text(
             text=(
-                f"**ʜᴇʏ, {message.from_user.mention} 🎀**\n"
-                f"**ɪ'ᴍ  {app.mention} ♡💫, ʏᴏᴜʀ ᴍᴜʟᴛɪᴛᴀsᴋɪɴɢ ᴀssɪsᴛᴀɴᴛ ʙᴏᴛ, ʙᴜɪʟᴛ ᴛᴏ sᴛʀᴇᴀᴍʟɪɴᴇ ɢʀᴏᴜᴘ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ ᴡɪᴛʜ ᴀᴅᴠᴀɴᴄᴇᴅ ᴛᴏᴏʟs ᴀɴᴅ ғᴇᴀᴛᴜʀᴇs! 🌸**\n\n"
-                f"[✨]({config.START_IMG_URL}) **✨ ʜᴇʀᴇ's ᴡʜᴀᴛ ɪ ᴄᴀɴ ᴅᴏ:**\n"
-                f" • ᴇғғɪᴄɪᴇɴᴛ ɢʀᴏᴜᴘ sᴜᴘᴇʀᴠɪsɪᴏɴ🛠\n"
-                f" • ᴀᴅᴠᴀɴᴄᴇᴅ ᴍᴏᴅᴇʀᴀᴛɪᴏɴ ᴏᴘᴛɪᴏɴs🚫\n"
-                f" • ᴇɴᴛᴇʀᴛᴀɪɴɪɴɢ ᴀɴᴅ ɪɴᴛᴇʀᴀᴄᴛɪᴠᴇ ᴍᴏᴅᴜʟᴇs🎮\n\n"
-                f"📚 **Need help? Click the button below! 💬**"
+                f"<b>𝐇ᴇʏ 🫰🏻💕 {message.from_user.mention}, <a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>✨⚡</a></b>\n\n"
+                f"<b>𝚻ʜɪs 𝐈s {app.mention}, 𝐄ʟᴇᴠᴀᴛᴇ 𝐘ᴏᴜʀ 𝐆ʀᴏᴜᴘ 𝐕ɪᴅᴇᴏ 𝐂ʜᴀᴛ 𝐖ɪᴛʜ 𝚻ʜɪs 𝚲ᴡᴇsᴏᴍᴇ 𝚻ᴇʟᴇɢʀᴀᴍ 𝐌ᴜsɪᴄ 𝛃ᴏ𝛕.💌.</b>\n\n"
+                f"<b>𝐒ᴛʀᴇᴀᴍ 𝐇ɪɢʜ-𝐐ᴜᴀʟɪᴛʏ 𝐌ᴜsɪᴄ 𝐃ᴜʀɪɴɢ 𝐘ᴏᴜʀ 𝐂ʜᴀᴛs 𝐀ɴᴅ 𝐒ʜᴀʀᴇ 𝐘ᴏᴜʀ 𝐅ᴀᴠᴏʀɪᴛᴇ 𝐒ᴏɴɢs 𝚻ᴏ 𝐂ʀᴇᴀᴛᴇ 𝚲 𝐋ᴏᴠᴇʟʏ 𝚲ᴛᴍᴏsᴘʜᴇʀᴇ! 🥂</b>"
             ),
-            reply_markup=get_main_menu_buttons(),
+            reply_markup=InlineKeyboardMarkup(out),
             invert_media=True,
             message_effect_id=5159385139981059251
         )
+        if await is_on_off(2):
+            await app.send_message(
+                chat_id=config.LOG_GROUP_ID,
+                text=f"<b>{message.from_user.mention} sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ.</b>\n\n"
+                     f"<b>• ɪᴅᴇɴᴛɪғɪᴇʀ :</b> <code>{message.from_user.id}</code>\n"
+                     f"<b>• ʜᴀɴᴅʟᴇ :</b> {message.from_user.username}.t.me",
+            )
 
-# ----------------- HELP MENU HANDLERS ----------------- #
-@app.on_message(filters.command("help") & filters.private & ~BANNED_USERS)
-async def help_command(client, message: Message):
-    await message.reply(
-        "**📚 All Available Modules:**",
-        reply_markup=get_paginated_buttons(),
-        invert_media=True
-    )
 
-@app.on_callback_query(filters.regex(r"^yumeko_help$"))
-async def show_help_menu(client, query: CallbackQuery):
-    await query.message.edit(
-        "**📚 All Available Modules:**",
-        reply_markup=get_paginated_buttons(),
-        invert_media=True
-    )
-
-@app.on_callback_query(filters.regex(r"^help_\d+_\d+$"))
-async def handle_help_callback(client, query: CallbackQuery):
-    data = query.data.split("_")
-    module_index = int(data[1])
-    current_page = int(data[2])
-    modules = sorted(LOADED_MODULES.keys())
-    module_name = modules[module_index]
-    help_text = LOADED_MODULES.get(module_name, "No help available for this module.")
-    await query.message.edit(
-        text=help_text,
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Back", callback_data=f"area_{current_page}")]])
-    )
-
-@app.on_callback_query(filters.regex(r"^area_\d+$"))
-async def handle_pagination_callback(client, query: CallbackQuery):
-    page = int(query.data[5:])
-    await query.message.edit(
-        "**📚 All Available Modules:**",
-        reply_markup=get_paginated_buttons(page),
-        invert_media=True
-    )
-
-@app.on_callback_query(filters.regex("st_back"))
-async def start_back(client, query: CallbackQuery):
-    await query.message.edit(
-        f"**Welcome back, {query.from_user.mention}**",
-        reply_markup=get_main_menu_buttons(),
-        invert_media=True
-    )
-
-# ----------------- GROUP START ----------------- #
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
@@ -183,7 +156,7 @@ async def start_gp(client, message: Message, _):
     )
     await add_served_chat(message.chat.id)
 
-# ----------------- WELCOME HANDLER ----------------- #
+
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
     for member in message.new_chat_members:
