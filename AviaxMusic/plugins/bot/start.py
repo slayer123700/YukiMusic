@@ -2,7 +2,7 @@ import asyncio
 import time
 import random
 from pyrogram import filters
-from pyrogram.enums import ChatType, ParseMode
+from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
 
@@ -25,23 +25,21 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Generate welcome text with blockquotes
+# Generate welcome text with simulated blockquote
 def get_welcome_text(user):
-    first_line = "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟"
-    blockquote = f"""
-> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶
-> ✨ Studio Master Audio Quality
-> 🚀 Zero-Latency Streaming
-> 🌙 24/7 Active & Responsive
-> 💫 Smart AI-Powered Playlists
-> 🔥 Lightning-Fast Searches
-> 👤 YOUR PROFILE 👑
-💖 Name: {user.first_name}
-🔐 ID: {user.id}
-> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉
-Ready to experience music like never before?
-"""
-    return f"{first_line}\n{blockquote}"
+    text = (
+        "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
+        "> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶\n"
+        "> ✨ Studio Master Audio Quality\n"
+        "> 🚀 Zero-Latency Streaming\n"
+        "> 🌙 24/7 Active & Responsive\n"
+        "> 💫 Smart AI-Powered Playlists\n"
+        "> 🔥 Lightning-Fast Searches\n"
+        f"> 👤 YOUR PROFILE 👑\n> 💖 Name: {user.first_name}\n> 🔐 ID: {user.id}\n"
+        "> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉\n"
+        "Ready to experience music like never before?"
+    )
+    return text
 
 
 # Private start command
@@ -56,12 +54,20 @@ async def start_pm(client, message: Message, _):
     # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video + text in one message (Markdown, blockquotes)
+    # Buttons under the video
+    buttons = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton("Help", callback_data="help")],
+            [InlineKeyboardButton("Support", url="https://t.me/YourSupportGroup")],
+        ]
+    )
+
+    # Video + simulated blockquote + buttons
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
         caption=get_welcome_text(message.from_user),
-        parse_mode=ParseMode.MARKDOWN,
-        supports_streaming=True
+        supports_streaming=True,
+        reply_markup=buttons
     )
 
     # Handle /start arguments
