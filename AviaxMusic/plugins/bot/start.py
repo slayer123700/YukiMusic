@@ -24,29 +24,6 @@ from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
-# --------------------- WELCOME TEXT ---------------------
-WELCOME_TEXT_MD = """
-*🌟✨ WELCOME TO Shizuka Music ✨🌟*
-
-🎧 *THE ULTIMATE MUSIC EXPERIENCE* 🎶
-  - Studio Master Audio Quality
-  - Zero-Latency Streaming
-  - 24/7 Active & Responsive
-  - Smart AI-Powered Playlists
-  - Lightning-Fast Searches
-
-🌐 *SUPPORTED PLATFORMS* 🌍
-  YouTube • Spotify • Resso • Apple Music • JioSaavn
-
-👤 *YOUR PROFILE* 👑
-  💖 Name: {name}
-  🔐 ID: {id}
-  ⭐ Status: Premium User
-
-⚡ *JOIN OUR MUSIC REVOLUTION TODAY!* 🎉
-Ready to experience music like never before?
-"""
-
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
 # --------------------- PRIVATE START ---------------------
@@ -61,14 +38,38 @@ async def start_pm(client, message: Message, _):
     # Sticker (optional)
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Send video with welcome caption (MarkdownV2)
+    # --- Send formatted welcome text first ---
+    WELCOME_TEXT_HTML = f"""
+<b>🌟✨ WELCOME TO Shizuka Music ✨🌟</b>
+
+🎧 <b>THE ULTIMATE MUSIC EXPERIENCE</b> 🎶
+  - Studio Master Audio Quality
+  - Zero-Latency Streaming
+  - 24/7 Active & Responsive
+  - Smart AI-Powered Playlists
+  - Lightning-Fast Searches
+
+🌐 <b>SUPPORTED PLATFORMS</b> 🌍
+  YouTube • Spotify • Resso • Apple Music • JioSaavn
+
+👤 <b>YOUR PROFILE</b> 👑
+  💖 Name: {message.from_user.mention}
+  🔐 ID: {message.from_user.id}
+  ⭐ Status: Premium User
+
+⚡ <b>JOIN OUR MUSIC REVOLUTION TODAY!</b> 🎉
+"""
+    await message.reply_text(
+        WELCOME_TEXT_HTML,
+        parse_mode="html",
+        disable_web_page_preview=True
+    )
+
+    # --- Send the video next ---
     await app.send_video(
         chat_id=message.chat.id,
         video="https://files.catbox.moe/0v9dyq.mp4",
-        caption=WELCOME_TEXT_MD.format(
-            name=message.from_user.mention, id=message.from_user.id
-        ),
-        parse_mode="markdown_v2",
+        caption="🎵 Enjoy the music! 🎵",
         supports_streaming=True
     )
 
