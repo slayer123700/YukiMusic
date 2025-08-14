@@ -24,6 +24,30 @@ from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS, OWNER_ID
 from strings import get_string
 
+WELCOME_TEXT = """
+🌟✨ 𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 ˹ 𝘚𝘩𝘪𝘻𝘶𝘬𝘢 ꭙ 𝘔𝘶𝘴𝘪𝘤 ˼ (https://t.me/Shizuka_MusicXbot) ✨🌟
+
+🎧 𝑻𝑯𝑬 𝑼𝑳𝑻𝑰𝑴𝑨𝑻𝑬 𝑴𝑼𝑺𝑰𝑪 𝑬𝑿𝑷𝑬𝑹𝑰𝑬𝑵𝑪𝑬 🎶
+  ✨ Studio Master Audio Quality
+  🚀 Zero-Latency Streaming
+  🌙 24/7 Active & Responsive
+  💫 Smart AI-Powered Playlists
+  🔥 Lightning-Fast Searches
+
+🌐 𝑺𝑼𝑷𝑷𝑶𝑹𝑻𝑬𝑫 𝑷𝑳𝑨𝑻𝑭𝑶𝑹𝑴𝑺 🌍
+  𝘠𝘰𝘶𝘵𝘶𝘣𝘦 • 𝘚𝘱𝘰𝘵𝘪𝘧𝘺 • 𝘙𝘦𝘴𝘴𝘰
+  𝘈𝘱𝘱𝘭𝘦 𝘔𝘶𝘴𝘪𝘤 • 𝘑𝘪𝘰𝘚𝘢𝘢𝘷𝘯
+
+👤 𝒀𝑶𝑼𝑹 𝑷𝑹𝑶𝑭𝑰𝑳𝑬 👑
+  💖 Name: {name}
+  🔐 ID: {id}
+  ⭐ Status: Premium User
+
+⚡ 𝑱𝑶𝑰𝑵 𝑶𝑼𝑹 𝑴𝑼𝑺𝑰𝑪 𝑹𝑬𝑽𝑶𝑳𝑼𝑻𝑰𝑶𝑵 𝑻𝑶𝑫𝑨𝒀 ! 🎉
+Ready to experience music like never before?
+"""
+
+
 # Start sticker selection
 STICKER_FILE_ID = random.choices(config.START_STICKER_FILE_ID, weights=[1, 1])[0]
 
@@ -36,7 +60,11 @@ async def start_pm(client, message: Message, _):
     await message.react("🍓", big=True)
 
     # Loading animation
-    loading_1 = await message.reply_text("⚡")
+    loading_1 = await message.reply_text(
+    WELCOME_TEXT.format(name=message.from_user.mention, id=message.from_user.id),
+    invert_media=True,
+    message_effect_id=5159385139981059251
+)
     await asyncio.sleep(0.1)
     await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ</b>")
     await asyncio.sleep(0.1)
