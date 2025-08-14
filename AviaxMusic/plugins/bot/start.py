@@ -25,23 +25,21 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Generate welcome text with blockquotes
+# Generate welcome text with "simulated blockquote"
 def get_welcome_text(user):
     return (
-        "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
-        "```\n"
-        "> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶\n"
-        "> ✨ Studio Master Audio Quality\n"
-        "> 🚀 Zero-Latency Streaming\n"
-        "> 🌙 24/7 Active & Responsive\n"
-        "> 💫 Smart AI-Powered Playlists\n"
-        "> 🔥 Lightning-Fast Searches\n"
-        "> 👤 YOUR PROFILE 👑\n"
+        f"🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
+        f"🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶\n"
+        f"✨ Studio Master Audio Quality\n"
+        f"🚀 Zero-Latency Streaming\n"
+        f"🌙 24/7 Active & Responsive\n"
+        f"💫 Smart AI-Powered Playlists\n"
+        f"🔥 Lightning-Fast Searches\n"
+        f"👤 YOUR PROFILE 👑\n"
         f"💖 Name: {user.first_name}\n"
-        f"🔐 ID: {user.id}\n"
-        "> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉\n"
-        "Ready to experience music like never before?\n"
-        "```"
+        f"🔐 ID: {user.id}\n\n"
+        f"⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉\n"
+        f"Ready to experience music like never before?"
     )
 
 # Private start command
@@ -56,14 +54,16 @@ async def start_pm(client, message: Message, _):
     # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video + blockquote text in the same message
-    out_buttons = start_panel(_)  # Buttons
+    # Video + text in one message (plain text for "blockquote")
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Help", callback_data="help")],
+        [InlineKeyboardButton("Support", url="https://t.me/YourSupportChat")]
+    ])
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
         caption=get_welcome_text(message.from_user),
-        parse_mode=None,  # No parse mode to avoid errors
-        supports_streaming=True,
-        reply_markup=InlineKeyboardMarkup(out_buttons)
+        reply_markup=keyboard,
+        supports_streaming=True
     )
 
     # Handle /start arguments
@@ -114,7 +114,6 @@ async def start_gp(client, message: Message, _):
         reply_markup=InlineKeyboardMarkup(out),
     )
     await add_served_chat(message.chat.id)
-
 
 # Welcome new chat members
 @app.on_message(filters.new_chat_members, group=-1)
