@@ -1,7 +1,7 @@
 import asyncio
 import time
 import random
-from pyrogram import filters
+from pyrogram import filters, enums
 from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
@@ -61,7 +61,6 @@ async def start_pm(client, message: Message, _):
 """
     await message.reply_text(
         WELCOME_TEXT_HTML,
-        parse_mode="html",
         disable_web_page_preview=True
     )
 
