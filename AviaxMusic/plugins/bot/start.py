@@ -2,7 +2,7 @@ import asyncio
 import time
 import random
 from pyrogram import filters
-from pyrogram.enums import ChatType, ParseMode
+from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
 
@@ -25,9 +25,18 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Generate welcome text with MarkdownV2 blockquote
+
+# Escape MarkdownV2 special characters
+def escape_md2(text: str):
+    escape_chars = r"\_*[]()~`>#+-=|{}.!"
+    for ch in escape_chars:
+        text = text.replace(ch, "\\" + ch)
+    return text
+
+
+# Welcome text with blockquotes
 def get_welcome_text(user):
-    text = (
+    raw_text = (
         f"🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
         f"> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶\n"
         f"> ✨ Studio Master Audio Quality\n"
@@ -41,34 +50,39 @@ def get_welcome_text(user):
         f"> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉\n"
         f"Ready to experience music like never before?"
     )
-    return text
+    return escape_md2(raw_text)
+
 
 # Private start command
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
+
+    # 🍓 Reaction
     await message.react("🍓", big=True)
+
+    # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video + blockquote text
+    # Video + blockquote text + buttons
     keyboard = start_panel(_)
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
         caption=get_welcome_text(message.from_user),
-        parse_mode=ParseMode.MARKDOWN_V2,
+        parse_mode="markdownv2",
         supports_streaming=True,
-        reply_markup=InlineKeyboardMarkup(keyboard)
+        reply_markup=InlineKeyboardMarkup(keyboard),
     )
 
-    # Handle /start arguments (help, sudo, info)
+    # Handle /start arguments
     if len(message.text.split()) > 1:
         arg = message.text.split(None, 1)[1]
         if arg.startswith("help"):
             keyboard = help_pannel(_)
             await message.reply_text(
                 "Here’s how you can use me ⬇️",
-                reply_markup=keyboard
+                reply_markup=InlineKeyboardMarkup(keyboard)
             )
         elif arg.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
@@ -86,15 +100,18 @@ async def start_pm(client, message: Message, _):
                     thumbnail = result["thumbnails"][0]["url"].split("?")[0]
                     channel = result["channel"]["name"]
                     link = result["link"]
-                    key = InlineKeyboardMarkup([[InlineKeyboardButton(text="ʏᴏᴜᴛᴜʙᴇ", url=link)]])
+                    published = result["publishedTime"]
+                    key = InlineKeyboardMarkup(
+                        [[InlineKeyboardButton(text="ʏᴏᴜᴛᴜʙᴇ", url=link)]]
+                    )
                 await m.delete()
                 await app.send_photo(
                     chat_id=message.chat.id,
                     photo=thumbnail,
-                    caption=f"*{title}*\nDuration: {duration}\nViews: {views}\nChannel: {channel}",
-                    parse_mode=ParseMode.MARKDOWN,
+                    caption=f"{title}\nDuration: {duration}\nViews: {views}\nPublished: {published}\nChannel: {channel}",
                     reply_markup=key,
                 )
+
 
 # Group start command
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
