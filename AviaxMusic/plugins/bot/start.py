@@ -1,7 +1,7 @@
 import asyncio
 import time
 import random
-from pyrogram import filters, enums
+from pyrogram import filters
 from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
@@ -24,9 +24,33 @@ from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
+WELCOME_TEXT = """
+<blockquote>
+🌟✨ 𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 ˹ 𝘚𝘩𝘪𝘻𝘶𝘬𝘢 ꭙ 𝘔𝘶𝘴𝘪𝘤 ˼ (https://t.me/Shizuka_MusicXbot) ✨🌟
+
+🎧 𝑻𝑯𝑬 𝑼𝑳𝑻𝑰𝑴𝑨𝑻𝑬 𝑴𝑼𝑺𝑰𝘾 𝑬𝑿𝑷𝑬𝑹𝑰𝑬𝑵𝑪𝑬 🎶
+  ✨ Studio Master Audio Quality
+  🚀 Zero-Latency Streaming
+  🌙 24/7 Active & Responsive
+  💫 Smart AI-Powered Playlists
+  🔥 Lightning-Fast Searches
+
+🌐 𝑺𝑼𝑷𝑷𝑶𝑹𝑻𝑬𝑫 𝑷𝑳𝑨𝑻𝑭𝑶𝑹𝑴𝑺 🌍
+  𝘠𝘰𝘶𝘵𝘶𝘣𝘦 • 𝘚𝘱𝘰𝘵𝘪𝘧𝘺 • 𝘙𝘦𝘴𝘴𝘰
+  𝘈𝘱𝘱𝘭𝘦 𝘔𝘶𝘴𝘪𝘤 • 𝘑𝘪𝘰𝘚𝘢𝘢𝘷𝘯
+
+👤 𝒀𝑶𝑼𝑹 𝑷𝑹𝑶𝑭𝑰𝑳𝑬 👑
+  💖 Name: {name}
+  🔐 ID: {id}
+  ⭐ Status: Premium User
+
+⚡ 𝑱𝑶𝑰𝑵 𝑶𝑼𝑹 𝑴𝑼𝑺𝑰𝑪 𝑹𝑬𝑽𝑶𝑳𝑼𝑻𝑰𝑶𝑵 𝑻𝑶𝑫𝑨𝒀 ! 🎉
+Ready to experience music like never before?
+</blockquote>
+"""
+
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# --------------------- PRIVATE START ---------------------
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
@@ -35,44 +59,22 @@ async def start_pm(client, message: Message, _):
     # 🍓 Reaction
     await message.react("🍓", big=True)
 
-    # Sticker (optional)
+    # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # --- Send formatted welcome text first ---
-    WELCOME_TEXT_HTML = f"""
-<b>🌟✨ WELCOME TO Shizuka Music ✨🌟</b>
+    # Separate video preview message for working preview
+    video_msg = await message.reply_text("https://files.catbox.moe/0v9dyq.mp4")
+    await asyncio.sleep(2)
+    await video_msg.delete()
 
-🎧 <b>THE ULTIMATE MUSIC EXPERIENCE</b> 🎶
-  - Studio Master Audio Quality
-  - Zero-Latency Streaming
-  - 24/7 Active & Responsive
-  - Smart AI-Powered Playlists
-  - Lightning-Fast Searches
-
-🌐 <b>SUPPORTED PLATFORMS</b> 🌍
-  YouTube • Spotify • Resso • Apple Music • JioSaavn
-
-👤 <b>YOUR PROFILE</b> 👑
-  💖 Name: {message.from_user.mention}
-  🔐 ID: {message.from_user.id}
-  ⭐ Status: Premium User
-
-⚡ <b>JOIN OUR MUSIC REVOLUTION TODAY!</b> 🎉
-"""
+    # Send welcome text once
     await message.reply_text(
-        WELCOME_TEXT_HTML,
-        disable_web_page_preview=True
+        WELCOME_TEXT.format(name=message.from_user.mention, id=message.from_user.id),
+        invert_media=True,
+        message_effect_id=5159385139981059251
     )
 
-    # --- Send the video next ---
-    await app.send_video(
-        chat_id=message.chat.id,
-        video="https://files.catbox.moe/0v9dyq.mp4",
-        caption="🎵 Enjoy the music! 🎵",
-        supports_streaming=True
-    )
-
-    # Handle /start arguments
+    # Handle /start args
     if len(message.text.split()) > 1:
         arg = message.text.split(None, 1)[1]
         if arg.startswith("help"):
@@ -109,7 +111,6 @@ async def start_pm(client, message: Message, _):
                     reply_markup=key,
                 )
 
-# --------------------- GROUP START ---------------------
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
@@ -121,7 +122,6 @@ async def start_gp(client, message: Message, _):
     )
     await add_served_chat(message.chat.id)
 
-# --------------------- WELCOME NEW MEMBERS ---------------------
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
     for member in message.new_chat_members:
