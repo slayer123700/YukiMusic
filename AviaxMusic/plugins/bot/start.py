@@ -2,7 +2,7 @@ import asyncio
 import time
 import random
 from pyrogram import filters
-from pyrogram.enums import ChatType
+from pyrogram.enums import ChatType, ParseMode
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
 
@@ -25,7 +25,7 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Plain text welcome, first line normal, rest blockquote
+# Create welcome text: first line normal, rest blockquote
 def get_welcome_text(user):
     first_line = "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟"
     blockquote = f"""
@@ -45,6 +45,7 @@ Ready to experience music like never before?
 """
     return first_line + "\n" + blockquote
 
+# Private start command
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
@@ -62,10 +63,10 @@ async def start_pm(client, message: Message, _):
         supports_streaming=True
     )
 
-    # Then send welcome text with blockquote style
+    # Welcome text with blockquote
     await message.reply_text(
         get_welcome_text(message.from_user),
-        parse_mode="markdown"
+        parse_mode=ParseMode.MARKDOWN
     )
 
     # Handle /start arguments
@@ -105,6 +106,7 @@ async def start_pm(client, message: Message, _):
                     reply_markup=key,
                 )
 
+# Group start command
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
@@ -117,6 +119,7 @@ async def start_gp(client, message: Message, _):
     await add_served_chat(message.chat.id)
 
 
+# Welcome new chat members
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
     for member in message.new_chat_members:
