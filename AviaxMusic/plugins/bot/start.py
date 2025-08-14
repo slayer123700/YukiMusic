@@ -25,11 +25,10 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Create welcome text: first line normal, rest blockquote
+# Generate welcome text with blockquotes
 def get_welcome_text(user):
     first_line = "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟"
     blockquote = f"""
-> Click here to join: https://t.me/Shizuka_MusicXbot
 > 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶
 > ✨ Studio Master Audio Quality
 > 🚀 Zero-Latency Streaming
@@ -37,13 +36,13 @@ def get_welcome_text(user):
 > 💫 Smart AI-Powered Playlists
 > 🔥 Lightning-Fast Searches
 > 👤 YOUR PROFILE 👑
-> 💖 Name: {user.mention}
-> 🔐 ID: {user.id}
-> ⭐ Status: Premium User
+💖 Name: {user.first_name}
+🔐 ID: {user.id}
 > ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉
 Ready to experience music like never before?
 """
-    return first_line + "\n" + blockquote
+    return f"{first_line}\n{blockquote}"
+
 
 # Private start command
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
@@ -57,16 +56,12 @@ async def start_pm(client, message: Message, _):
     # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video first
+    # Video + text in one message (Markdown, blockquotes)
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
+        caption=get_welcome_text(message.from_user),
+        parse_mode=ParseMode.MARKDOWN,
         supports_streaming=True
-    )
-
-    # Welcome text with blockquote
-    await message.reply_text(
-        get_welcome_text(message.from_user),
-        parse_mode=ParseMode.MARKDOWN
     )
 
     # Handle /start arguments
