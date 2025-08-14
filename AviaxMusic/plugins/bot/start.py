@@ -25,30 +25,25 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Plain-text blockquote style welcome message
-WELCOME_TEXT = """
-> 🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟
+# Plain text welcome, first line normal, rest blockquote
+def get_welcome_text(user):
+    first_line = "🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟"
+    blockquote = f"""
 > Click here to join: https://t.me/Shizuka_MusicXbot
-
 > 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶
 > ✨ Studio Master Audio Quality
 > 🚀 Zero-Latency Streaming
 > 🌙 24/7 Active & Responsive
 > 💫 Smart AI-Powered Playlists
 > 🔥 Lightning-Fast Searches
-
-> 🌐 SUPPORTED PLATFORMS 🌍
-> YouTube • Spotify • Resso
-> Apple Music • JioSaavn
-
 > 👤 YOUR PROFILE 👑
-> 💖 Name: {name}
-> 🔐 ID: {id}
+> 💖 Name: {user.mention}
+> 🔐 ID: {user.id}
 > ⭐ Status: Premium User
-
 > ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉
 Ready to experience music like never before?
 """
+    return first_line + "\n" + blockquote
 
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
@@ -61,14 +56,16 @@ async def start_pm(client, message: Message, _):
     # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video with blockquote caption (plain text)
+    # Video first
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
-        caption=WELCOME_TEXT.format(
-            name=message.from_user.mention, 
-            id=message.from_user.id
-        ),
         supports_streaming=True
+    )
+
+    # Then send welcome text with blockquote style
+    await message.reply_text(
+        get_welcome_text(message.from_user),
+        parse_mode="markdown"
     )
 
     # Handle /start arguments
