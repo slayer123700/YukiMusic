@@ -16,14 +16,16 @@ from AviaxMusic.utils.database import (
     blacklisted_chats,
     get_lang,
     is_banned_user,
-    is_on_off,
 )
 from AviaxMusic.utils.decorators.language import LanguageStart
 from AviaxMusic.utils.formatters import get_readable_time
-from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
+from AviaxMusic.utils.inline import help_pannel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
+STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
+
+# Blockquote-style welcome message
 WELCOME_TEXT = """
 <i>> 🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟</i>
 <i>> <a href="https://t.me/Shizuka_MusicXbot">Click here to join</a></i>
@@ -48,19 +50,6 @@ WELCOME_TEXT = """
 Ready to experience music like never before?
 """
 
-# Sending the video with the blockquote-style caption
-await message.reply_video(
-    video="https://files.catbox.moe/0v9dyq.mp4",
-    caption=WELCOME_TEXT.format(
-        name=message.from_user.mention,
-        id=message.from_user.id
-    ),
-    parse_mode="html",
-    supports_streaming=True
-)
-STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
-
-
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
@@ -69,38 +58,36 @@ async def start_pm(client, message: Message, _):
     # 🍓 Reaction
     await message.react("🍓", big=True)
 
-    # Send video with welcome text as caption
+    # Sticker
+    await message.reply_cached_media(file_id=STICKER_FILE_ID)
+
+    # Video with blockquote caption
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
         caption=WELCOME_TEXT.format(
             name=message.from_user.mention, id=message.from_user.id
         ),
         parse_mode="html",
-        supports_streaming=True,
-        duration=10,
+        supports_streaming=True
     )
 
     # Handle /start args
     if len(message.text.split()) > 1:
         arg = message.text.split(None, 1)[1]
-
         if arg.startswith("help"):
             keyboard = help_pannel(_)
             await message.reply_text(
                 "Here’s how you can use me ⬇️",
                 reply_markup=keyboard
             )
-
         elif arg.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
-
         elif arg.startswith("inf"):
             m = await message.reply_text("⚡️ Searching...")
             query = arg.replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
             next_result = await results.next()
-
             if isinstance(next_result, dict) and "result" in next_result:
                 for result in next_result["result"]:
                     title = result["title"]
@@ -110,19 +97,14 @@ async def start_pm(client, message: Message, _):
                     channel = result["channel"]["name"]
                     link = result["link"]
                     published = result["publishedTime"]
-
                     key = InlineKeyboardMarkup(
                         [[InlineKeyboardButton(text="ʏᴏᴜᴛᴜʙᴇ", url=link)]]
                     )
-
                 await m.delete()
                 await app.send_photo(
                     chat_id=message.chat.id,
                     photo=thumbnail,
-                    caption=(
-                        f"{title}\nDuration: {duration}\nViews: {views}"
-                        f"\nPublished: {published}\nChannel: {channel}"
-                    ),
+                    caption=f"{title}\nDuration: {duration}\nViews: {views}\nPublished: {published}\nChannel: {channel}",
                     reply_markup=key,
                 )
 
@@ -145,18 +127,15 @@ async def welcome(client, message: Message):
         try:
             language = await get_lang(message.chat.id)
             _ = get_string(language)
-
             if await is_banned_user(member.id):
                 try:
                     await message.chat.ban_member(member.id)
                 except:
                     pass
-
             if member.id == app.id:
                 if message.chat.type != ChatType.SUPERGROUP:
                     await message.reply_text(_["start_4"])
                     return await app.leave_chat(message.chat.id)
-
                 if message.chat.id in await blacklisted_chats():
                     await message.reply_text(
                         _["start_5"].format(
