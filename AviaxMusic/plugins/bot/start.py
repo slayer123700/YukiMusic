@@ -28,7 +28,7 @@ WELCOME_TEXT = """
 <blockquote>
 🌟✨ 𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 ˹ 𝘚𝘩𝘪𝘻𝘶𝘬𝘢 ꭙ 𝘔𝘶𝘴𝘪𝘤 ˼ (https://t.me/Shizuka_MusicXbot) ✨🌟
 
-🎧 𝑻𝑯𝑬 𝑼𝑳𝑻𝑰𝑴𝑨𝑻𝑬 𝑴𝑼𝑺𝑰𝘾 𝑬𝑿𝑷𝑬𝑹𝑰𝑬𝑁𝑪𝑬 🎶
+🎧 𝑻𝑯𝑬 𝑼𝑳𝑻𝑰𝑴𝑨𝑻𝑬 𝑴𝑼𝑺𝑰𝘾 𝑬𝑿𝑷𝑬𝑹𝑰𝑬𝑵𝑪𝑬 🎶
   ✨ Studio Master Audio Quality
   🚀 Zero-Latency Streaming
   🌙 24/7 Active & Responsive
@@ -49,7 +49,7 @@ Ready to experience music like never before?
 </blockquote>
 """
 
-STICKER_FILE_ID = random.choices(config.START_STICKER_FILE_ID, weights=[1, 1])[0]
+STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
@@ -59,38 +59,35 @@ async def start_pm(client, message: Message, _):
     # 🍓 Reaction
     await message.react("🍓", big=True)
 
-    # Send start sticker/video first
+    # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Send "started..." video preview message
-    started_msg = await message.reply_text(
-        text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/0v9dyq.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>"
-    )
-    await asyncio.sleep(0.4)
-    await started_msg.delete()
+    # Separate video preview message for working preview
+    video_msg = await message.reply_text("https://files.catbox.moe/0v9dyq.mp4")
+    await asyncio.sleep(2)
+    await video_msg.delete()
 
-    # Send welcome text with effect
+    # Send welcome text once
     await message.reply_text(
         WELCOME_TEXT.format(name=message.from_user.mention, id=message.from_user.id),
         invert_media=True,
         message_effect_id=5159385139981059251
     )
 
+    # Handle /start args
     if len(message.text.split()) > 1:
-        name = message.text.split(None, 1)[1]
-        if name.startswith("help"):
+        arg = message.text.split(None, 1)[1]
+        if arg.startswith("help"):
             keyboard = help_pannel(_)
             await message.reply_text(
-                WELCOME_TEXT.format(name=message.from_user.mention, id=message.from_user.id),
-                reply_markup=keyboard,
-                invert_media=True,
-                message_effect_id=5159385139981059251
+                "Here’s how you can use me ⬇️",
+                reply_markup=keyboard
             )
-        elif name.startswith("sud"):
+        elif arg.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
-        elif name.startswith("inf"):
-            m = await message.reply_text("⚡️")
-            query = name.replace("info_", "", 1)
+        elif arg.startswith("inf"):
+            m = await message.reply_text("⚡️ Searching...")
+            query = arg.replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
             next_result = await results.next()
@@ -113,14 +110,6 @@ async def start_pm(client, message: Message, _):
                     caption=f"{title}\nDuration: {duration}\nViews: {views}\nPublished: {published}\nChannel: {channel}",
                     reply_markup=key,
                 )
-    else:
-        out = private_panel(_)
-        await message.reply_text(
-            WELCOME_TEXT.format(name=message.from_user.mention, id=message.from_user.id),
-            reply_markup=InlineKeyboardMarkup(out),
-            invert_media=True,
-            message_effect_id=5159385139981059251
-        )
 
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
