@@ -62,7 +62,7 @@ def get_paginated_buttons(page=1, items_per_page=15):
 def get_main_menu_buttons():
     buttons = [
         [InlineKeyboardButton("➕ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ", url=f"https://t.me/{app.me.username}?startgroup=true")],
-        [InlineKeyboardButton("🤝 Sᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_CHAT_LINK),
+        [InlineKeyboardButton("🤝 Sᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_GROUP),
          InlineKeyboardButton("👤 ᴏᴡɴᴇʀ", user_id=OWNER_ID)],
         [InlineKeyboardButton("Cᴏᴍᴍᴀɴᴅs", callback_data="yumeko_help")]
     ]
