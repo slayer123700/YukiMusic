@@ -51,6 +51,8 @@ Ready to experience music like never before?
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
+
+# --------------------- PRIVATE START ---------------------
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
@@ -59,19 +61,18 @@ async def start_pm(client, message: Message, _):
     # 🍓 Reaction
     await message.react("🍓", big=True)
 
-    # Sticker
+    # Sticker (optional)
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Separate video preview message for working preview
-    video_msg = await message.reply_text("https://files.catbox.moe/0v9dyq.mp4")
-    await asyncio.sleep(2)
-    await video_msg.delete()
-
-    # Send welcome text once
-    await message.reply_text(
-        WELCOME_TEXT.format(name=message.from_user.mention, id=message.from_user.id),
-        invert_media=True,
-        message_effect_id=5159385139981059251
+    # Send video with caption (start text)
+    await app.send_video(
+        chat_id=message.chat.id,
+        video="https://files.catbox.moe/0v9dyq.mp4",
+        caption=WELCOME_TEXT.format(
+            name=message.from_user.mention, id=message.from_user.id
+        ),
+        parse_mode="html",
+        supports_streaming=True
     )
 
     # Handle /start args
@@ -111,6 +112,8 @@ async def start_pm(client, message: Message, _):
                     reply_markup=key,
                 )
 
+
+# --------------------- GROUP START ---------------------
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
@@ -122,6 +125,8 @@ async def start_gp(client, message: Message, _):
     )
     await add_served_chat(message.chat.id)
 
+
+# --------------------- WELCOME NEW MEMBERS ---------------------
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
     for member in message.new_chat_members:
