@@ -25,30 +25,39 @@ from config import BANNED_USERS
 from strings import get_string
 
 WELCOME_TEXT = """
-<blockquote>
-🌟✨ 𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 ˹ 𝘚𝘩𝘪𝘻𝘶𝘬𝘢 ꭙ 𝘔𝘶𝘴𝘪𝘤 ˼ (https://t.me/Shizuka_MusicXbot) ✨🌟
+<i>> 🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟</i>
+<i>> <a href="https://t.me/Shizuka_MusicXbot">Click here to join</a></i>
 
-🎧 𝑻𝑯𝑬 𝑼𝑳𝑻𝑰𝑴𝑨𝑻𝑬 𝑴𝑼𝑺𝑰𝘾 𝑬𝑿𝑷𝑬𝑹𝑰𝑬𝑵𝑪𝑬 🎶
-  ✨ Studio Master Audio Quality
-  🚀 Zero-Latency Streaming
-  🌙 24/7 Active & Responsive
-  💫 Smart AI-Powered Playlists
-  🔥 Lightning-Fast Searches
+<i>> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶</i>
+<i>> ✨ Studio Master Audio Quality</i>
+<i>> 🚀 Zero-Latency Streaming</i>
+<i>> 🌙 24/7 Active & Responsive</i>
+<i>> 💫 Smart AI-Powered Playlists</i>
+<i>> 🔥 Lightning-Fast Searches</i>
 
-🌐 𝑺𝑼𝑷𝑷𝑶𝑹𝑻𝑬𝑫 𝑷𝑳𝑨𝑻𝑭𝑶𝑹𝑴𝑺 🌍
-  𝘠𝘰𝘶𝘵𝘶𝘣𝘦 • 𝘚𝘱𝘰𝘵𝘪𝘧𝘺 • 𝘙𝘦𝘴𝘴𝘰
-  𝘈𝘱𝘱𝘭𝘦 𝘔𝘶𝘴𝘪𝘤 • 𝘑𝘪𝘰𝘚𝘢𝘢𝘷𝘯
+<i>> 🌐 SUPPORTED PLATFORMS 🌍</i>
+<i>> YouTube • Spotify • Resso</i>
+<i>> Apple Music • JioSaavn</i>
 
-👤 𝒀𝑶𝑼𝑹 𝑷𝑹𝑶𝑭𝑰𝑳𝑬 👑
-  💖 Name: {name}
-  🔐 ID: {id}
-  ⭐ Status: Premium User
+<i>> 👤 YOUR PROFILE 👑</i>
+<i>> 💖 Name: {name}</i>
+<i>> 🔐 ID: {id}</i>
+<i>> ⭐ Status: Premium User</i>
 
-⚡ 𝑱𝑶𝑰𝑵 𝑶𝑼𝑹 𝑴𝑼𝑺𝑰𝑪 𝑹𝑬𝑽𝑶𝑳𝑼𝑻𝑰𝑶𝑵 𝑻𝑶𝑫𝑨𝒀 ! 🎉
+<i>> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉</i>
 Ready to experience music like never before?
-</blockquote>
 """
 
+# Sending the video with the blockquote-style caption
+await message.reply_video(
+    video="https://files.catbox.moe/0v9dyq.mp4",
+    caption=WELCOME_TEXT.format(
+        name=message.from_user.mention,
+        id=message.from_user.id
+    ),
+    parse_mode="html",
+    supports_streaming=True
+)
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
 
