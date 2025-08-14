@@ -25,28 +25,28 @@ from strings import get_string
 
 STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Blockquote-style welcome message
+# Plain-text blockquote style welcome message
 WELCOME_TEXT = """
-<i>> 🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟</i>
-<i>> <a href="https://t.me/Shizuka_MusicXbot">Click here to join</a></i>
+> 🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟
+> Click here to join: https://t.me/Shizuka_MusicXbot
 
-<i>> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶</i>
-<i>> ✨ Studio Master Audio Quality</i>
-<i>> 🚀 Zero-Latency Streaming</i>
-<i>> 🌙 24/7 Active & Responsive</i>
-<i>> 💫 Smart AI-Powered Playlists</i>
-<i>> 🔥 Lightning-Fast Searches</i>
+> 🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶
+> ✨ Studio Master Audio Quality
+> 🚀 Zero-Latency Streaming
+> 🌙 24/7 Active & Responsive
+> 💫 Smart AI-Powered Playlists
+> 🔥 Lightning-Fast Searches
 
-<i>> 🌐 SUPPORTED PLATFORMS 🌍</i>
-<i>> YouTube • Spotify • Resso</i>
-<i>> Apple Music • JioSaavn</i>
+> 🌐 SUPPORTED PLATFORMS 🌍
+> YouTube • Spotify • Resso
+> Apple Music • JioSaavn
 
-<i>> 👤 YOUR PROFILE 👑</i>
-<i>> 💖 Name: {name}</i>
-<i>> 🔐 ID: {id}</i>
-<i>> ⭐ Status: Premium User</i>
+> 👤 YOUR PROFILE 👑
+> 💖 Name: {name}
+> 🔐 ID: {id}
+> ⭐ Status: Premium User
 
-<i>> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉</i>
+> ⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉
 Ready to experience music like never before?
 """
 
@@ -61,17 +61,17 @@ async def start_pm(client, message: Message, _):
     # Sticker
     await message.reply_cached_media(file_id=STICKER_FILE_ID)
 
-    # Video with blockquote caption
+    # Video with blockquote caption (plain text)
     await message.reply_video(
         video="https://files.catbox.moe/0v9dyq.mp4",
         caption=WELCOME_TEXT.format(
-            name=message.from_user.mention, id=message.from_user.id
+            name=message.from_user.mention, 
+            id=message.from_user.id
         ),
-        parse_mode="html",
         supports_streaming=True
     )
 
-    # Handle /start args
+    # Handle /start arguments
     if len(message.text.split()) > 1:
         arg = message.text.split(None, 1)[1]
         if arg.startswith("help"):
@@ -107,7 +107,6 @@ async def start_pm(client, message: Message, _):
                     caption=f"{title}\nDuration: {duration}\nViews: {views}\nPublished: {published}\nChannel: {channel}",
                     reply_markup=key,
                 )
-
 
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
