@@ -23,27 +23,23 @@ from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS, OWNER_ID
 from strings import get_string
 
+
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
+    # Loading animation
     loading_1 = await message.reply_text("⚡")
-    await asyncio.sleep(0.1)
-    
-    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ</b>")
-    await asyncio.sleep(0.1)
-    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ.</b>")
-    await asyncio.sleep(0.1)
-    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ..</b>")
-    await asyncio.sleep(0.1)
-    await loading_1.edit_text("<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>")
-    await asyncio.sleep(0.1)
+    for dots in ["ʟᴏᴀᴅɪɴɢ", "ʟᴏᴀᴅɪɴɢ.", "ʟᴏᴀᴅɪɴɢ..", "ᴀʟᴍᴏsᴛ ʜᴇʀᴇ..."]:
+        await asyncio.sleep(0.1)
+        await loading_1.edit_text(f"<b>{dots}</b>")
     await loading_1.delete()
 
-    # Add reaction and message effect
+    # Reaction and message effect
     await message.react("🍓", big=True)
-    
+
+    # Temporary start animation
     started_msg = await message.reply_text(
         text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/ck28qb.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>",
         invert_media=True,
@@ -52,7 +48,7 @@ async def start_pm(client, message: Message, _):
     await asyncio.sleep(0.4)
     await started_msg.delete()
 
-    # New welcome message with name and ID mentions
+    # Welcome message
     welcome_text = (
         f"❤️‍🩹 𝐖ᴇʟᴄᴏᴍᴇ {message.from_user.mention} (ID: <code>{message.from_user.id}</code>) 𝐓ᴏ\n\n"
         "🌙 ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ᴍᴜsɪᴄ ᴇxᴘᴇʀɪᴇɴᴄᴇ 🍇\n\n"
@@ -68,9 +64,10 @@ async def start_pm(client, message: Message, _):
         "𝐉ᴏɪɴ 𝐎ᴜʀ 𝐌ᴜsɪᴄ 𝐑ᴇᴠᴏʟᴜᴛɪᴏɴ 𝐓ᴏᴅᴀʏ! 🎸"
     )
 
+    # FIXED: help_pannel already returns InlineKeyboardMarkup
     await message.reply_text(
         text=welcome_text,
-        reply_markup=InlineKeyboardMarkup(help_pannel(_)),  # Ensure help_pannel returns a list of lists
+        reply_markup=help_pannel(_),
         invert_media=True,
         message_effect_id=5159385139981059251
     )
@@ -79,10 +76,9 @@ async def start_pm(client, message: Message, _):
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
-    out = start_panel(_)
+    out = start_panel(_)  # returns a list
     uptime = int(time.time() - _boot_)
-    
-    # Add reaction and message effect
+
     await message.react("🍓", big=True)
 
     welcome_text = (
@@ -99,14 +95,15 @@ async def start_gp(client, message: Message, _):
         "🎧 𝐑ᴇᴀᴅʏ 𝐓ᴏ 𝐄xᴘᴇʀɪᴇɴᴄᴇ 𝐌ᴜsɪᴄ 𝐋ɪᴋᴇ 𝐍ᴇᴠᴇʀ 𝐁ᴇғᴏʀᴇ? 💃🏼\n\n"
         "𝐉ᴏɪɴ 𝐎ᴜʀ 𝐌ᴜsɪᴄ 𝐑ᴇᴠᴏʟᴜᴛɪᴏɴ 𝐓ᴏᴅᴀʏ! 🎸"
     )
-    
+
+    # FIXED: start_panel returns a list, so wrap in InlineKeyboardMarkup
     await message.reply_text(
         text=welcome_text,
-        reply_markup=InlineKeyboardMarkup(out),  # Ensure out is a list of lists
+        reply_markup=InlineKeyboardMarkup(out),
         invert_media=True,
         message_effect_id=5159385139981059251
     )
-    
+
     await add_served_chat(message.chat.id)
 
 
@@ -144,7 +141,7 @@ async def welcome(client, message: Message):
                         message.chat.title,
                         app.mention,
                     ),
-                    reply_markup=InlineKeyboardMarkup(out),
+                    reply_markup=InlineKeyboardMarkup(out)
                 )
                 await add_served_chat(message.chat.id)
                 await message.stop_propagation()
