@@ -1,6 +1,5 @@
 import asyncio
 import time
-import random
 from pyrogram import filters
 from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
@@ -16,106 +15,82 @@ from AviaxMusic.utils.database import (
     blacklisted_chats,
     get_lang,
     is_banned_user,
+    is_on_off,
 )
 from AviaxMusic.utils.decorators.language import LanguageStart
 from AviaxMusic.utils.formatters import get_readable_time
-from AviaxMusic.utils.inline import help_pannel, start_panel
-from config import BANNED_USERS
+from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
+from config import BANNED_USERS, OWNER_ID
 from strings import get_string
 
-STICKER_FILE_ID = random.choice(config.START_STICKER_FILE_ID)
 
-# Generate welcome text with "simulated blockquote"
-def get_welcome_text(user):
-    return (
-        f"🌟✨ WELCOME TO ˹ Shizuka ꭙ Music ˼ ✨🌟\n\n"
-        f"🎧 THE ULTIMATE MUSIC EXPERIENCE 🎶\n"
-        f">✨ Studio Master Audio Quality\n"
-        f">🚀 Zero-Latency Streaming\n"
-        f">🌙 24/7 Active & Responsive\n"
-        f">💫 Smart AI-Powered Playlists\n"
-        f">🔥 Lightning-Fast Searches\n"
-        f"👤 YOUR PROFILE 👑\n"
-        f"💖 Name: {user.first_name}\n"
-        f"🔐 ID: {user.id}\n\n"
-        f"⚡ JOIN OUR MUSIC REVOLUTION TODAY! 🎉\n"
-        f"Ready to experience music like never before?"
-    )
-
-# Private start command
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
-    # 🍓 Reaction
-    await message.react("🍓", big=True)
+    loading_1 = await message.reply_text("⚡")
+    await asyncio.sleep(0.1)
+    
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ.</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ..</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.delete()
 
-    # Sticker
-    await message.reply_cached_media(file_id=STICKER_FILE_ID)
+    started_msg = await message.reply_text(text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/50dv1p.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>")
+    await asyncio.sleep(0.4)
+    await started_msg.delete()
 
-    # Video + text in one message (plain text for "blockquote")
-    keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Help", callback_data="help")],
-        [InlineKeyboardButton("Support", url="https://t.me/YourSupportChat")]
-    ])
-    await message.reply_video(
-        video="https://files.catbox.moe/0v9dyq.mp4",
-        caption=get_welcome_text(message.from_user),
-        reply_markup=keyboard,
-        supports_streaming=True
+    # New welcome message with name and ID mentions
+    welcome_text = (
+        f"❤️‍🩹 𝐖ᴇʟᴄᴏᴍᴇ {message.from_user.mention} (ID: <code>{message.from_user.id}</code>) 𝐓ᴏ\n\n"
+        "🌙 ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ᴍᴜsɪᴄ ᴇxᴘᴇʀɪᴇɴᴄᴇ 🍇\n\n"
+        "꩟ 𝐒ᴛᴜᴅɪᴏ 𝐌ᴀsᴛᴇʀ 𝐀ᴜᴅɪᴏ 𝐐ᴜᴀʟɪᴛʏ 🍇\n"
+        "꩟ 𝐙ᴇʀᴏ-𝐋ᴀᴛᴇɴᴄʏ 𝐒ᴛʀᴇᴀᴍɪɴɢ 🍇\n"
+        "꩟ 𝟐𝟒/𝟕 𝐀ᴄᴛɪᴠᴇ & 𝐑ᴇsᴘᴏɴsɪᴠᴇ 🍇\n"
+        "꩟ 𝐒ᴍᴀʀᴛ 𝐀𝐈-𝐏ᴏᴡᴇʀᴇᴅ 𝐏ʟᴀʏʟɪsᴛs 🍇\n"
+        "꩟ 𝐋ɪɡʜᴛɴɪɴɢ-𝐅ᴀsᴛ 𝐒ᴇᴀʀᴄʜᴇs 🍇\n"
+        "꩟ 𝐘ᴏᴜʀ 𝐏ʀᴏғɪʟᴇ 🍇\n\n"
+        "🎧 𝐑ᴇᴀᴅʏ 𝐓ᴏ 𝐄xᴘᴇʀɪᴇɴᴄᴇ 𝐌ᴜsɪᴄ 𝐋ɪᴋᴇ 𝐍ᴇᴠᴇʀ 𝐁ᴇғᴏʀᴇ? 💃🏼\n\n"
+        "𝐉ᴏɪɴ 𝐎ᴜʀ 𝐌ᴜsɪᴄ 𝐑ᴇᴠᴏʟᴜᴛɪᴏɴ 𝐓ᴏᴅᴀʏ! 🎸"
     )
 
-    # Handle /start arguments
-    if len(message.text.split()) > 1:
-        arg = message.text.split(None, 1)[1]
-        if arg.startswith("help"):
-            keyboard = help_pannel(_)
-            await message.reply_text(
-                "Here’s how you can use me ⬇️",
-                reply_markup=keyboard
-            )
-        elif arg.startswith("sud"):
-            await sudoers_list(client=client, message=message, _=_)
-        elif arg.startswith("inf"):
-            m = await message.reply_text("⚡️ Searching...")
-            query = arg.replace("info_", "", 1)
-            query = f"https://www.youtube.com/watch?v={query}"
-            results = VideosSearch(query, limit=1)
-            next_result = await results.next()
-            if isinstance(next_result, dict) and "result" in next_result:
-                for result in next_result["result"]:
-                    title = result["title"]
-                    duration = result["duration"]
-                    views = result["viewCount"]["short"]
-                    thumbnail = result["thumbnails"][0]["url"].split("?")[0]
-                    channel = result["channel"]["name"]
-                    link = result["link"]
-                    published = result["publishedTime"]
-                    key = InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="ʏᴏᴜᴛᴜʙᴇ", url=link)]]
-                    )
-                await m.delete()
-                await app.send_photo(
-                    chat_id=message.chat.id,
-                    photo=thumbnail,
-                    caption=f"{title}\nDuration: {duration}\nViews: {views}\nPublished: {published}\nChannel: {channel}",
-                    reply_markup=key,
-                )
+    await message.reply_text(
+        text=welcome_text,
+        reply_markup=InlineKeyboardMarkup(help_pannel(_))
+    )
 
-# Group start command
+
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
     out = start_panel(_)
     uptime = int(time.time() - _boot_)
+    welcome_text = (
+        f"❤️‍🩹 𝐖ᴇʟᴄᴏᴍᴇ {message.from_user.mention} (ID: <code>{message.from_user.id}</code>) 𝐓ᴏ\n\n"
+        "🌙 ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ᴍᴜsɪᴄ ᴇxᴘᴇʀɪᴇɴᴄᴇ 🍇\n\n"
+        "꩟ 𝐒ᴛᴜᴅɪᴏ 𝐌ᴀsᴛᴇʀ 𝐀ᴜᴅɪᴏ 𝐐ᴜᴀʟɪᴛʏ 🍇\n"
+        "꩟ 𝐙ᴇʀᴏ-𝐋ᴀᴛᴇɴᴄʏ 𝐒ᴛʀᴇᴀᴍɪɴɢ 🍇\n"
+        "꩟ 𝟐𝟒/𝟕 𝐀ᴄᴛɪᴠᴇ & 𝐑ᴇsᴘᴏɴsɪᴠᴇ 🍇\n"
+        "꩟ 𝐒ᴍᴀʀᴛ 𝐀𝐈-𝐏ᴏᴡᴇʀᴇᴅ 𝐏ʟᴀʏʟɪsᴛs 🍇\n"
+        "꩟ 𝐋ɪɡʜᴛɴɪɴɢ-𝐅ᴀsᴛ 𝐒ᴇᴀʀᴄʜᴇs 🍇\n"
+        "꩟ 𝐘ᴏᴜʀ 𝐏ʀᴏғɪʟᴇ 🍇\n\n"
+        "🎧 𝐑ᴇᴀᴅʏ 𝐓ᴏ 𝐄xᴘᴇʀɪᴇɴᴄᴇ 𝐌ᴜsɪᴄ 𝐋ɪᴋᴇ 𝐍ᴇᴠᴇʀ 𝐁ᴇғᴏʀᴇ? 💃🏼\n\n"
+        "𝐉ᴏɪɴ 𝐎ᴜʀ 𝐌ᴜsɪᴄ 𝐑ᴇᴠᴏʟᴜᴛɪᴏɴ 𝐓ᴏᴅᴀʏ! 🎸"
+    )
+    
     await message.reply_text(
-        text=_["start_1"].format(app.mention, get_readable_time(uptime)),
+        text=welcome_text,
         reply_markup=InlineKeyboardMarkup(out),
     )
     await add_served_chat(message.chat.id)
 
-# Welcome new chat members
+
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
     for member in message.new_chat_members:
@@ -136,7 +111,7 @@ async def welcome(client, message: Message):
                         _["start_5"].format(
                             app.mention,
                             f"https://t.me/{app.username}?start=sudolist",
-                            config.SUPPORT_GROUP,
+                            config.SUPPORT_CHAT,
                         ),
                         disable_web_page_preview=True,
                     )
