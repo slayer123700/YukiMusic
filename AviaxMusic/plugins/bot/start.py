@@ -23,7 +23,6 @@ from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS, OWNER_ID
 from strings import get_string
 
-
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
@@ -42,7 +41,14 @@ async def start_pm(client, message: Message, _):
     await asyncio.sleep(0.1)
     await loading_1.delete()
 
-    started_msg = await message.reply_text(text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/50dv1p.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>")
+    # Add reaction and message effect
+    await message.react("🍓", big=True)
+    
+    started_msg = await message.reply_text(
+        text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/ck28qb.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>",
+        invert_media=True,
+        message_effect_id=5159385139981059251
+    )
     await asyncio.sleep(0.4)
     await started_msg.delete()
 
@@ -56,13 +62,17 @@ async def start_pm(client, message: Message, _):
         "꩟ 𝐒ᴍᴀʀᴛ 𝐀𝐈-𝐏ᴏᴡᴇʀᴇᴅ 𝐏ʟᴀʏʟɪsᴛs 🍇\n"
         "꩟ 𝐋ɪɡʜᴛɴɪɴɢ-𝐅ᴀsᴛ 𝐒ᴇᴀʀᴄʜᴇs 🍇\n"
         "꩟ 𝐘ᴏᴜʀ 𝐏ʀᴏғɪʟᴇ 🍇\n\n"
+        "꩟ 𝐍ᴀᴍᴇ :- \n"
+        "꩟ 𝐈'𝐃 :-\n\n"
         "🎧 𝐑ᴇᴀᴅʏ 𝐓ᴏ 𝐄xᴘᴇʀɪᴇɴᴄᴇ 𝐌ᴜsɪᴄ 𝐋ɪᴋᴇ 𝐍ᴇᴠᴇʀ 𝐁ᴇғᴏʀᴇ? 💃🏼\n\n"
         "𝐉ᴏɪɴ 𝐎ᴜʀ 𝐌ᴜsɪᴄ 𝐑ᴇᴠᴏʟᴜᴛɪᴏɴ 𝐓ᴏᴅᴀʏ! 🎸"
     )
 
     await message.reply_text(
         text=welcome_text,
-        reply_markup=InlineKeyboardMarkup(help_pannel(_))
+        reply_markup=InlineKeyboardMarkup(help_pannel(_)),
+        invert_media=True,
+        message_effect_id=5159385139981059251
     )
 
 
@@ -71,6 +81,10 @@ async def start_pm(client, message: Message, _):
 async def start_gp(client, message: Message, _):
     out = start_panel(_)
     uptime = int(time.time() - _boot_)
+    
+    # Add reaction and message effect
+    await message.react("🍓", big=True)
+
     welcome_text = (
         f"❤️‍🩹 𝐖ᴇʟᴄᴏᴍᴇ {message.from_user.mention} (ID: <code>{message.from_user.id}</code>) 𝐓ᴏ\n\n"
         "🌙 ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ᴍᴜsɪᴄ ᴇxᴘᴇʀɪᴇɴᴄᴇ 🍇\n\n"
@@ -80,6 +94,8 @@ async def start_gp(client, message: Message, _):
         "꩟ 𝐒ᴍᴀʀᴛ 𝐀𝐈-𝐏ᴏᴡᴇʀᴇᴅ 𝐏ʟᴀʏʟɪsᴛs 🍇\n"
         "꩟ 𝐋ɪɡʜᴛɴɪɴɢ-𝐅ᴀsᴛ 𝐒ᴇᴀʀᴄʜᴇs 🍇\n"
         "꩟ 𝐘ᴏᴜʀ 𝐏ʀᴏғɪʟᴇ 🍇\n\n"
+        "꩟ 𝐍ᴀᴍᴇ :- \n"
+        "꩟ 𝐈'𝐃 :-\n\n"
         "🎧 𝐑ᴇᴀᴅʏ 𝐓ᴏ 𝐄xᴘᴇʀɪᴇɴᴄᴇ 𝐌ᴜsɪᴄ 𝐋ɪᴋᴇ 𝐍ᴇᴠᴇʀ 𝐁ᴇғᴏʀᴇ? 💃🏼\n\n"
         "𝐉ᴏɪɴ 𝐎ᴜʀ 𝐌ᴜsɪᴄ 𝐑ᴇᴠᴏʟᴜᴛɪᴏɴ 𝐓ᴏᴅᴀʏ! 🎸"
     )
@@ -87,7 +103,10 @@ async def start_gp(client, message: Message, _):
     await message.reply_text(
         text=welcome_text,
         reply_markup=InlineKeyboardMarkup(out),
+        invert_media=True,
+        message_effect_id=5159385139981059251
     )
+    
     await add_served_chat(message.chat.id)
 
 
