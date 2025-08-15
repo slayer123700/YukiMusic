@@ -1,7 +1,7 @@
 
 from pyrogram.types import InlineKeyboardButton
 import config
-from Devine import app
+from AviaxMusic import app
 
 def start_panel(_):
     buttons = [
