@@ -70,7 +70,7 @@ async def start_pm(client, message: Message, _):
 
     await message.reply_text(
         text=welcome_text,
-        reply_markup=InlineKeyboardMarkup(help_pannel(_)),
+        reply_markup=InlineKeyboardMarkup(help_pannel(_)),  # Ensure help_pannel returns a list of lists
         invert_media=True,
         message_effect_id=5159385139981059251
     )
@@ -102,7 +102,7 @@ async def start_gp(client, message: Message, _):
     
     await message.reply_text(
         text=welcome_text,
-        reply_markup=InlineKeyboardMarkup(out),
+        reply_markup=InlineKeyboardMarkup(out),  # Ensure out is a list of lists
         invert_media=True,
         message_effect_id=5159385139981059251
     )
