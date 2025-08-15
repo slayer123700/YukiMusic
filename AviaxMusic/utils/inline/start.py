@@ -1,17 +1,8 @@
-
 from pyrogram.types import InlineKeyboardButton
 import config
 from AviaxMusic import app
 
-def start_panel(_):
-    buttons = [
-        [
-            InlineKeyboardButton(text="sᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_GROUP),
-        ],
-    ]
-    return buttons
-
-def private_panel(_):
+def start_buttons(_):
     buttons = [
         [
             InlineKeyboardButton(text="ᴜᴘᴅᴀᴛᴇs", url=config.SUPPORT_CHANNEL),
