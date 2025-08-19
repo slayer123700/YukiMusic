@@ -1,15 +1,16 @@
 import asyncio
 import time
 from pyrogram import filters
-from pyrogram.enums import ChatType, MessageEffect
+from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
 
+
 import config
-from Devine import app
-from Devine.misc import _boot_
-from Devine.plugins.sudo.sudoers import sudoers_list
-from Devine.utils.database import (
+from AviaxMusic import app
+from AviaxMusic.misc import _boot_
+from AviaxMusic.plugins.sudo.sudoers import sudoers_list
+from AviaxMusic.utils.database import (
     add_served_chat,
     add_served_user,
     blacklisted_chats,
@@ -17,10 +18,10 @@ from Devine.utils.database import (
     is_banned_user,
     is_on_off,
 )
-from Devine.utils.decorators.language import LanguageStart
-from Devine.utils.formatters import get_readable_time
-from Devine.utils.inline import help_pannel, private_panel, start_panel
-from config import BANNED_USERS
+from AviaxMusic.utils.decorators.language import LanguageStart
+from AviaxMusic.utils.formatters import get_readable_time
+from AviaxMusic.utils.inline import help_pannel, private_panel, start_panel
+from config import BANNED_USERS, OWNER_ID
 from strings import get_string
 
 
@@ -29,24 +30,23 @@ from strings import get_string
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
-    # Loading animation
     loading_1 = await message.reply_text("⚡")
-    for txt in ["<b>ʟᴏᴀᴅɪɴɢ</b>", "<b>ʟᴏᴀᴅɪɴɢ.</b>", "<b>ʟᴏᴀᴅɪɴɢ..</b>", "<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>"]:
-        await asyncio.sleep(0.1)
-        await loading_1.edit_text(txt)
+    await asyncio.sleep(0.1)
+    
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ.</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ʟᴏᴀᴅɪɴɢ..</b>")
+    await asyncio.sleep(0.1)
+    await loading_1.edit_text("<b>ᴀʟᴍᴏsᴛ ʜᴇʀᴇ...</b>")
     await asyncio.sleep(0.1)
     await loading_1.delete()
 
-    # Start video message with effect
-    started_msg = await message.reply_text(
-        text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/ck28qb.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>",
-        message_effect_id=MessageEffect.SNOWFALL,  # Example effect
-    )
-    await started_msg.react("🍓", big=True)  # Reaction
+    started_msg = await message.reply_text(text="<b>sᴛᴀʀᴛᴇᴅ...<a href='https://files.catbox.moe/ck28qb.mp4' target='_blank'>ㅤ ㅤㅤㅤ</a></b>")
     await asyncio.sleep(0.4)
     await started_msg.delete()
 
-    # Command parameter handling
     if len(message.text.split()) > 1:
         name = message.text.split(None, 1)[1]
         if name.startswith("help"):
@@ -55,11 +55,11 @@ async def start_pm(client, message: Message, _):
                 text=(
                     f"<b>ʜᴇʏ {message.from_user.mention}, <a href='https://files.catbox.moe/ck28qb.mp4' target='_blank'>✨⚡</a></b>\n\n"
                     f"<b>ᴛʜɪs ɪs {app.mention}, ᴇʟᴇᴠᴀᴛᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴠɪᴅᴇᴏ ᴄʜᴀᴛ ᴡɪᴛʜ ᴛʜɪs ᴀᴡᴇsᴏᴍᴇ ᴛᴇʟᴇɢʀᴀᴍ ᴍᴜsɪᴄ ʙᴏᴛ.</b>\n\n"
-                    f"<b>sᴛʀᴇᴀᴍ ʜɪɢʜ-ǫᴜᴀʟɪᴛʏ ᴍᴜsɪᴄ ᴅᴜʀɪɴɢ ʏᴏᴜʀ ᴄʜᴀᴛs ᴀɴᴅ sʜᴀʀᴇ ʏᴏᴜʀ ғᴀᴠᴏʀɪᴛᴇ sᴏɴɢs!</b>"
-                ),
+                    f"<b>sᴛʀᴇᴀᴍ ʜɪɢʜ-ǫᴜᴀʟɪᴛʏ ᴍᴜsɪᴄ ᴅᴜʀɪɴɢ ʏᴏᴜʀ ᴄʜᴀᴛs ᴀɴᴅ sʜᴀʀᴇ ʏᴏᴜʀ ғᴀᴠᴏʀɪᴛᴇ sᴏɴɢs ᴛᴏ ᴍᴀᴋᴇ ᴀ ғʀɪᴇɴᴅʟʏ & ʟᴏᴠᴇʟʏ ᴀᴛᴍᴏsᴘʜᴇʀᴇ!</b>"
+                    ),
                 reply_markup=keyboard,
             )
-        elif name.startswith("sud"):
+        if name.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
             if await is_on_off(2):
                 await app.send_message(
@@ -70,11 +70,12 @@ async def start_pm(client, message: Message, _):
                 )
             return
 
-        elif name.startswith("inf"):
+        if name.startswith("inf"):
             m = await message.reply_text("⚡️")
             query = name.replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
+
             next_result = await results.next()
 
             if isinstance(next_result, dict) and "result" in next_result:
@@ -94,6 +95,7 @@ async def start_pm(client, message: Message, _):
                         [[InlineKeyboardButton(text="ʏᴏᴜᴛᴜʙᴇ", url=link)]]
                     )
                 await m.delete()
+
                 await app.send_photo(
                     chat_id=message.chat.id,
                     photo=thumbnail,
@@ -109,18 +111,17 @@ async def start_pm(client, message: Message, _):
                     )
             else:
                 await m.edit_text("ғᴀɪʟᴇᴅ ᴛᴏ ʀᴇᴛʀɪᴇᴠᴇ ɪɴғᴏʀᴍᴀᴛɪᴏɴ.")
-                return
+                return  # Early exit
     else:
         out = private_panel(_)
-        sent = await message.reply_text(
+        await message.reply_text(
             text=(
                  f"<b>ʏᴏᴏ {message.from_user.mention}, <a href='https://files.catbox.moe/ck28qb.mp4' target='_blank'>✨⚡</a></b>\n\n"
-                 f"<b>ᴛʜɪs ɪs {app.mention}, ᴇʟᴇᴠᴀᴛᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴠɪᴅᴇᴏ ᴄʜᴀᴛ!</b>"
+                 f"<b>ᴛʜɪs ɪs {app.mention}, ᴇʟᴇᴠᴀᴛᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴠɪᴅᴇᴏ ᴄʜᴀᴛ ᴡɪᴛʜ ᴛʜɪs ᴀᴡᴇsᴏᴍᴇ ᴛᴇʟᴇɢʀᴀᴍ ᴍᴜsɪᴄ ʙᴏᴛ.</b>\n\n"
+                 f"<b>sᴛʀᴇᴀᴍ ʜɪɢʜ-ǫᴜᴀʟɪᴛʏ ᴍᴜsɪᴄ ᴅᴜʀɪɴɢ ʏᴏᴜʀ ᴄʜᴀᴛs ᴀɴᴅ sʜᴀʀᴇ ʏᴏᴜʀ ғᴀᴠᴏʀɪᴛᴇ sᴏɴɢs ᴛᴏ ᴄʀᴇᴀᴛᴇ ᴀ ʟᴏᴠᴇʟʏ ᴀᴛᴍᴏsᴘʜᴇʀᴇ!</b>"
             ),
             reply_markup=InlineKeyboardMarkup(out),
-            message_effect_id=MessageEffect.HEARTS,
         )
-        await sent.react("🍓", big=True)
         if await is_on_off(2):
             await app.send_message(
                 chat_id=config.LOGGER_ID,
@@ -135,14 +136,11 @@ async def start_pm(client, message: Message, _):
 async def start_gp(client, message: Message, _):
     out = start_panel(_)
     uptime = int(time.time() - _boot_)
-    sent = await message.reply_text(
+    await message.reply_text(
         text=_["start_1"].format(app.mention, get_readable_time(uptime)),
         reply_markup=InlineKeyboardMarkup(out),
-        message_effect_id=MessageEffect.FIREWORKS,
     )
-    await sent.react("🔥", big=True)
     await add_served_chat(message.chat.id)
-
 
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
@@ -171,7 +169,7 @@ async def welcome(client, message: Message):
                     return await app.leave_chat(message.chat.id)
 
                 out = start_panel(_)
-                sent = await message.reply_text(
+                await message.reply_text(
                     _["start_3"].format(
                         message.from_user.first_name,
                         app.mention,
@@ -179,9 +177,7 @@ async def welcome(client, message: Message):
                         app.mention,
                     ),
                     reply_markup=InlineKeyboardMarkup(out),
-                    message_effect_id=MessageEffect.FIREWORKS,
                 )
-                await sent.react("🍓", big=True)
                 await add_served_chat(message.chat.id)
                 await message.stop_propagation()
         except Exception as ex:
