@@ -7,27 +7,30 @@ from pyrogram import filters
 load_dotenv()
 
 # Get this value from my.telegram.org/apps
-API_ID = int(getenv("API_ID", "26249286"))
-API_HASH = getenv("API_HASH", "4e3bf0b014fda4ac752e8f4ab854279b")
+API_ID = 20046177
+API_HASH = "83d15f2956be4b4b927acded8bdf780f"
 
 # Get your token from @BotFather on Telegram.
-BOT_TOKEN = getenv("BOT_TOKEN", "7608476761:AAHOYX1Kq92KF-4YuN5vlCAePqzexK8w3LI")
+BOT_TOKEN = "8336737769:AAGJxRUtmsaMBOQTYBclxiRsCVRq-jl5AC8"
+# -------------------------------------------------------
+OWNER_USERNAME = "Uxfzr"
+# --------------------------------------------------------
+BOT_USERNAME = "riselia_xbot"
+# --------------------------------------------------------
+BOT_NAME = "  ˹ʀɪsᴇʟɪᴀ ꭙ ϻᴜsɪᴄ ˼ ♪  "
+# ---------------------------------------------------------
+
 
 # Get your mongo url from cloud.mongodb.com
-MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://musicbotxd:musicbotxd@cluster0.6thyk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+MONGO_DB_URI = "mongodb+srv://lollolopp0900:slayersan@cluster0.mge1ngz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
-DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 1700))
+DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 17000))
 
 # Chat id of a group for logging bot's activities
-LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", -1002745123292))
+LOGGER_ID = "-1003497101254"
 
-# Get this value from @MissRose_Bot on Telegram by /id
-OWNER_ID = int(getenv("OWNER_ID", "6018803920"))
-
-#YOUTUBE API's 
-API_URL = getenv("API_URL", 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=your_search_query&key=AIzaSyD_iwN3MADFGdp4xCZFo4G-e04BPyFORms') #youtube song url
-API_KEY = getenv("API_KEY", 'AIzaSyD_iwN3MADFGdp4xCZFo4G-e04BPyFORms')
-
+# Get this value from @PURVI_HELP_BOT on Telegram by /id
+OWNER_ID = 1684261042
 ## Fill these variables if you're deploying on heroku.
 # Your heroku app name
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
@@ -43,8 +46,8 @@ GIT_TOKEN = getenv(
     "GIT_TOKEN", None
 )  # Fill this variable if your upstream repository is private
 
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/eldian_bot_update")
-SUPPORT_GROUP = getenv("SUPPORT_GROUP", "https://t.me/+vuzPm5BpV3Y0NTVl")
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/+nLmLp4RsvnRiZGFl")
+SUPPORT_CHAT = getenv("SUPPORT_CHAT","https://t.me/+nLmLp4RsvnRiZGFl")
 
 # Set this to True if you want the assistant to automatically leave chats after an interval
 AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
@@ -52,8 +55,6 @@ AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
 # make your bots privacy from telegra.ph and put your url here 
 PRIVACY_LINK = getenv("PRIVACY_LINK", "https://telegra.ph/file/d3d80cd8cc0a6363eb21d.jpg")
 
-API_URL = getenv("API_URL", 'https://api.thequickearn.xyz') #youtube song url
-API_KEY = getenv("API_KEY", '30DxNexGenBots9d11bc')
 
 
 # Get this credentials from https://developer.spotify.com/dashboard
@@ -72,7 +73,7 @@ TG_VIDEO_FILESIZE_LIMIT = int(getenv("TG_VIDEO_FILESIZE_LIMIT", 2145386496))
 
 
 # Get your pyrogram v2 session from Replit
-STRING1 = getenv("STRING_SESSION1", "AQE0vf0AdMa8XBKFWCvvCE90oz_Z5lOaajDhltUAXImjlpEufjQiww5z6Rp7yP6eXmjo8UYjj__hg1MvgWrsS57_CUs3B9W3j01Qvb9NuFzEYHZiLQLFRxVyer_FFCYjm7h7ipNELxzHdXkjhWxL8tuSt2iD5aiNhPduAYrlD1K6193-AAB2rHg8L3MCUKGDqc7t4KVd3PhkCXvWI4IrM1bmyiF3zXLugJPMVNUcvavCe83xVh3xxalIMdGUzivmS5tWRbsKvFZ_pDQV4a_b-503h2TUys8N1_E7spDbBtl8No9iTQgy5rHz1jblnvQUnbuHUzq8XA6ZLpt8N9Eme1tNnenhGQAAAAHw-oLHAA")
+STRING1 = getenv("STRING_SESSION1", "AgFZuDsAHopGuFlJIIoe0tUQRKjNly8A-Lt3xh4OUgxmMKK-wFVx9kdgRJzGyCkBeMJ3PrIoEfT0v7eHN4sLXG7J2aQElk4L-NHVQoQoNw-dVxJPVzNeyv38a6raE6Dqioi24lCRvMtD-tMjGI-VGaSdgxvPODQfCdzc4NLR75PkwuRRJgbnUAM7mLaCzqTuyGn4sPXCe35_sqMtE_5Da7bW0a5TSIvM0ZNICYwE-XBhSRaySjnJJJPd5p0yu63-7XibBZTrhnGJTXERQKBcDs2BCwTp-WWKT33t4SBA0jSKfyHZHBsXPBzu_O7Z1FhKri5jFeMmranvI0ts8wDDN5r4w9sYhwAAAAHs--m5AA")
 STRING2 = getenv("STRING_SESSION2", None)
 STRING3 = getenv("STRING_SESSION3", None)
 STRING4 = getenv("STRING_SESSION4", None)
